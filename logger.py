@@ -1,0 +1,123 @@
+import os
+import csv
+import time
+from datetime import datetime
+from PyQt5.QtCore import QObject, pyqtSignal
+import simplekml
+
+# Logger Configuration constants
+DATA_FRESHNESS_THRESHOLD_SEC = 5.0  # Reject data older than this
+DATA_QUALITY_RESET_THRESHOLD = 1000  # Reset counters after this many messages
+
+class TelemetryLogger(QObject):
+    log_message = pyqtSignal(str)
+
+    def __init__(self, base_dir="logs"):
+        super().__init__()
+        self.base_dir = base_dir
+        os.makedirs(self.base_dir, exist_ok=True)
+        self.file = None
+        self.csv_writer = None
+        self.last_file = None
+        self._kml_track = []
+        self.latest_telemetry = {
+            "ATTITUDE": None,
+            "GPS_POS": None,
+            "GPS": None,
+            "VFR_HUD": None,
+            "SYS_STATUS": None
+        }
+        # Add data quality tracking
+        self.data_quality = {
+            "last_update": time.time(),
+            "message_count": 0,
+            "error_count": 0
+        }
+
+    def start(self):
+        """Start a new log session"""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        path = os.path.join(self.base_dir, f"asra_log_{timestamp}.csv")
+        self.file = open(path, "w", encoding="utf-8", newline='')
+        self.csv_writer = csv.writer(self.file)
+        self.csv_writer.writerow(["timestamp", "ATTITUDE", "GPS_POS", "GPS", "VFR_HUD", "SYS_STATUS", "total_messages", "error_count"])
+        self.last_file = path
+        # Reset data quality counters
+        self.data_quality = {
+            "last_update": time.time(),
+            "message_count": 0,
+            "error_count": 0
+        }
+        self.log_message.emit(f"Log session started: {path}")
+        return path
+
+    def update_telemetry(self, typ, payload):
+        """Update the latest telemetry data with validation"""
+        if typ.upper() in self.latest_telemetry:
+            # Validate timestamp
+            if isinstance(payload, dict) and 'timestamp' in payload:
+                # Check if data is not too old
+                if time.time() - payload['timestamp'] < DATA_FRESHNESS_THRESHOLD_SEC:
+                    self.latest_telemetry[typ.upper()] = payload
+                    self.data_quality["message_count"] += 1
+                else:
+                    self.data_quality["error_count"] += 1
+            else:
+                self.latest_telemetry[typ.upper()] = payload
+                self.data_quality["message_count"] += 1
+
+    def log_row(self):
+        """Write a row of aggregated telemetry data to the CSV file"""
+        if self.file:
+            # Add data quality metrics to log
+            timestamp = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+            row_data = [timestamp] + [self.latest_telemetry[key] for key in sorted(self.latest_telemetry.keys())]
+            # Add data quality info
+            row_data.append(self.data_quality["message_count"])
+            row_data.append(self.data_quality["error_count"])
+            
+            self.csv_writer.writerow(row_data)
+            log_str = f"{timestamp} - LOG WRITTEN (Msgs: {self.data_quality['message_count']}, Errs: {self.data_quality['error_count']})"
+            self.log_message.emit(log_str)
+            
+            # Reset counters periodically
+            if self.data_quality["message_count"] + self.data_quality["error_count"] > DATA_QUALITY_RESET_THRESHOLD:
+                self.data_quality["message_count"] = 0
+                self.data_quality["error_count"] = 0
+
+    def write(self, typ, payload):
+        """Write a log entry"""
+        if self.file:
+            self.update_telemetry(typ, payload)
+            if typ == "gps" and 'lat' in payload and 'lon' in payload:
+                self._kml_track.append((payload['lon'], payload['lat'], payload.get('alt', 0)))
+
+    def stop(self):
+        """Stop logging"""
+        if self.file:
+            self.file.close()
+            self.file = None
+            self.csv_writer = None
+            self.log_message.emit("Log session stopped.")
+            if self._kml_track:
+                kml_file = self.export_kml()
+                if kml_file:
+                    self.log_message.emit(f"KML path exported to {kml_file}")
+            else:
+                self.log_message.emit("No waypoints to export, KML file not generated.")
+            self._kml_track = []
+
+    def export_kml(self, filename=None):
+        """Export flight path to KML"""
+        if not self._kml_track:
+            self.log_message.emit("No waypoints to export, KML file not generated.")
+            return None
+        if not filename and self.last_file: filename = self.last_file.replace('.csv', '.kml')
+        elif not filename: filename = os.path.join(self.base_dir, f"flight_path_{int(datetime.now().timestamp())}.kml")
+            
+        kml = simplekml.Kml()
+        linestring = kml.newlinestring(name="Flight Path", description="Generated by ASRA GCS", coords=self._kml_track)
+        linestring.style.linestyle.color = simplekml.Color.red
+        linestring.style.linestyle.width = 3
+        kml.save(filename)
+        return filename

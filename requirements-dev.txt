@@ -1,0 +1,6 @@
+# Python build dependencies
+pyinstaller>=5.0.0
+auto-py-to-exe>=2.0.0
+
+# Optional installers
+pynsist>=2.7.0
