@@ -1,41 +1,35 @@
 """
-ASRA GCS - Individual Drone Panel Widget
-UI panel for controlling and monitoring a single drone
-Used in multi-drone tabbed or grid layout
+ASRA GCS - Enhanced Drone Panel Widget v2
+With connection controls and exception handling
 """
 
 import math
+import serial.tools.list_ports
 from PyQt5 import QtCore, QtGui, QtWidgets
 from hud_widget_reference_style import ReferenceStyleHUDWidget
 
 
 class DronePanelWidget(QtWidgets.QWidget):
-    """
-    Individual drone control panel
-    Contains HUD, telemetry displays, and control buttons for one drone
-    """
+    """Individual drone panel with connection controls"""
     
     def __init__(self, drone_id, drone_manager, parent=None):
         super().__init__(parent)
         self.drone_id = drone_id
         self.drone_manager = drone_manager
         
-        # Get drone info
         drone = drone_manager.get_drone(drone_id)
         self.drone_color = drone.color if drone else "#FF0000"
         self.drone_name = drone.name if drone else "Unknown"
         
-        # Setup UI
         self._setup_ui()
         
-        # Connect to drone manager signals
+        # Connect signals
         self.drone_manager.drone_telemetry_updated.connect(self._on_telemetry_update)
         self.drone_manager.drone_connected.connect(self._on_connection_changed)
         self.drone_manager.drone_disconnected.connect(self._on_connection_changed)
         
     def _setup_ui(self):
-        """Create UI layout"""
-        # Apply color-coded theme
+        """Create UI"""
         self.setStyleSheet(f"""
             QWidget {{
                 background-color: #2a2a2a;
@@ -52,7 +46,7 @@ class DronePanelWidget(QtWidgets.QWidget):
                 background-color: #333333;
             }}
             QGroupBox::title {{
-                subcontrol-origin: margin;
+                subcontrolorigin: margin;
                 subcontrol-position: top center;
                 padding: 0 8px;
                 color: {self.drone_color};
@@ -60,28 +54,19 @@ class DronePanelWidget(QtWidgets.QWidget):
             QPushButton {{
                 background-color: #0078d4;
                 border: 1px solid #005a9e;
-                padding: 8px 16px;
+                padding: 6px 12px;
                 border-radius: 4px;
                 font-weight: bold;
                 color: white;
-                min-width: 80px;
             }}
-            QPushButton:hover {{
-                background-color: #1084d8;
-            }}
-            QPushButton:pressed {{
-                background-color: #005a9e;
-            }}
-            QPushButton:disabled {{
-                background-color: #404040;
-                color: #808080;
-            }}
+            QPushButton:hover {{ background-color: #1084d8; }}
+            QPushButton:pressed {{ background-color: #005a9e; }}
+            QPushButton:disabled {{ background-color: #404040; color: #808080; }}
             QComboBox {{
                 background-color: #404040;
                 border: 1px solid #555555;
-                padding: 6px 12px;
+                padding: 4px 8px;
                 border-radius: 4px;
-                min-width: 100px;
             }}
             QTextEdit {{
                 background-color: #1a1a1a;
@@ -93,91 +78,111 @@ class DronePanelWidget(QtWidgets.QWidget):
             }}
         """)
         
-        # Main layout
-        main_layout = QtWidgets.QHBoxLayout(self)
+        main_layout = QtWidgets.QVBoxLayout(self)
+        
+        # Header
+        header = QtWidgets.QLabel(f"<b style='color: {self.drone_color}'>● {self.drone_name}</b>")
+        header.setStyleSheet("font-size: 11pt; padding: 5px;")
+        main_layout.addWidget(header)
+        
+        # Content split: HUD | Panels
+        content_layout = QtWidgets.QHBoxLayout()
         
         # Left: HUD
         self.hud = ReferenceStyleHUDWidget(self)
-        self.hud.setFixedSize(480, 400)
-        main_layout.addWidget(self.hud)
+        self.hud.setFixedSize(400, 350)
+        content_layout.addWidget(self.hud)
         
-        # Right: Telemetry and controls
+        # Right: Telemetry + Controls
         right_panel = QtWidgets.QWidget()
         right_layout = QtWidgets.QVBoxLayout(right_panel)
         
-        # Drone info header
-        info_label = QtWidgets.QLabel(f"<b style='color: {self.drone_color}'>● {self.drone_name}</b>")
-        info_label.setStyleSheet("font-size: 12pt; padding: 5px;")
-        right_layout.addWidget(info_label)
+        # Connection panel
+        conn_box = self._create_connection_panel()
+        right_layout.addWidget(conn_box)
         
         # Telemetry panels
-        attitude_box = self._create_telemetry_groupbox("Attitude", [
-            ("Roll", "lbl_roll"),
-            ("Pitch", "lbl_pitch"),
-            ("Yaw", "lbl_yaw"),
-            ("Mode", "lbl_mode")
-        ])
+        right_layout.addWidget(self._create_telemetry_groupbox("Attitude", [
+            ("Roll", "lbl_roll"), ("Pitch", "lbl_pitch"), ("Yaw", "lbl_yaw"), ("Mode", "lbl_mode")
+        ]))
         
-        gps_box = self._create_telemetry_groupbox("GPS", [
-            ("Fix Type", "lbl_gps_fix"),
-            ("Satellites", "lbl_gps_sats"),
-            ("HDOP", "lbl_gps_hdop"),
-            ("VDOP", "lbl_gps_vdop"),
-            ("Latitude", "lbl_gps_lat"),
-            ("Longitude", "lbl_gps_lon")
-        ])
+        right_layout.addWidget(self._create_telemetry_groupbox("GPS", [
+            ("Fix", "lbl_gps_fix"), ("Sats", "lbl_gps_sats"), 
+            ("Lat", "lbl_gps_lat"), ("Lon", "lbl_gps_lon")
+        ]))
         
-        status_box = self._create_telemetry_groupbox("System Status", [
-            ("Voltage", "lbl_status_volt"),
-            ("Current", "lbl_status_curr"),
-            ("Battery", "lbl_status_rem")
-        ])
+        right_layout.addWidget(self._create_telemetry_groupbox("Battery", [
+            ("Voltage", "lbl_status_volt"), ("Current", "lbl_status_curr"), ("Remaining", "lbl_status_rem")
+        ]))
         
-        actions_box = self._create_actions_groupbox()
-        
-        right_layout.addWidget(attitude_box)
-        right_layout.addWidget(gps_box)
-        right_layout.addWidget(status_box)
-        right_layout.addWidget(actions_box)
+        # Control actions
+        right_layout.addWidget(self._create_actions_panel())
         right_layout.addStretch()
         
-        main_layout.addWidget(right_panel)
+        content_layout.addWidget(right_panel)
+        main_layout.addLayout(content_layout)
         
-        # Messages panel (bottom)
-        messages_box = QtWidgets.QGroupBox("Messages")
-        messages_layout = QtWidgets.QVBoxLayout(messages_box)
+        # Messages
+        msg_box = QtWidgets.QGroupBox("Messages")
+        msg_layout = QtWidgets.QVBoxLayout(msg_box)
         self.message_area = QtWidgets.QTextEdit()
         self.message_area.setReadOnly(True)
-        self.message_area.setMaximumHeight(150)
-        messages_layout.addWidget(self.message_area)
+        self.message_area.setMaximumHeight(100)
+        msg_layout.addWidget(self.message_area)
+        main_layout.addWidget(msg_box)
         
-        # Add messages to main layout
-        main_layout.addWidget(messages_box)
-        
-    def _create_telemetry_groupbox(self, title, labels):
-        """Create telemetry display group box"""
-        box = QtWidgets.QGroupBox(title)
+    def _create_connection_panel(self):
+        """Create connection controls"""
+        box = QtWidgets.QGroupBox("Connection")
         layout = QtWidgets.QGridLayout(box)
         
-        for i, (text, name) in enumerate(labels):
-            label = QtWidgets.QLabel(f"{text}:")
-            value_label = QtWidgets.QLabel("N/A")
-            setattr(self, name, value_label)
-            layout.addWidget(label, i, 0)
-            layout.addWidget(value_label, i, 1)
+        self.combo_port = QtWidgets.QComboBox()
+        self.combo_baud = QtWidgets.QComboBox()
+        self.combo_baud.addItems(["57600", "115200", "230400"])
         
+        self.btn_refresh = QtWidgets.QPushButton("↻")
+        self.btn_refresh.setMaximumWidth(30)
+        self.btn_refresh.clicked.connect(self._refresh_ports)
+        
+        self.btn_connect = QtWidgets.QPushButton("Connect")
+        self.btn_connect.clicked.connect(self._on_connect)
+        self.btn_connect.setStyleSheet("background-color: #00aa00;")
+        
+        self.btn_disconnect = QtWidgets.QPushButton("Disconnect")
+        self.btn_disconnect.clicked.connect(self._on_disconnect)
+        self.btn_disconnect.setEnabled(False)
+        self.btn_disconnect.setStyleSheet("background-color: #aa0000;")
+        
+        layout.addWidget(QtWidgets.QLabel("Port:"), 0, 0)
+        layout.addWidget(self.combo_port, 0, 1)
+        layout.addWidget(self.btn_refresh, 0, 2)
+        layout.addWidget(QtWidgets.QLabel("Baud:"), 1, 0)
+        layout.addWidget(self.combo_baud, 1, 1, 1, 2)
+        layout.addWidget(self.btn_connect, 2, 0, 1, 2)
+        layout.addWidget(self.btn_disconnect, 2, 2)
+        
+        self._refresh_ports()
         return box
     
-    def _create_actions_groupbox(self):
-        """Create vehicle actions group box"""
-        box = QtWidgets.QGroupBox("Vehicle Actions")
+    def _create_telemetry_groupbox(self, title, labels):
+        """Create telemetry display"""
+        box = QtWidgets.QGroupBox(title)
+        layout = QtWidgets.QGridLayout(box)
+        for i, (text, name) in enumerate(labels):
+            lbl = QtWidgets.QLabel(f"{text}:")
+            val = QtWidgets.QLabel("N/A")
+            setattr(self, name, val)
+            layout.addWidget(lbl, i, 0)
+            layout.addWidget(val, i, 1)
+        return box
+    
+    def _create_actions_panel(self):
+        """Create control actions"""
+        box = QtWidgets.QGroupBox("Vehicle Control")
         layout = QtWidgets.QGridLayout(box)
         
-        self.btn_arm_disarm = QtWidgets.QPushButton("Arm / Disarm")
-        self.btn_arm_disarm.clicked.connect(self._on_arm_disarm)
-        
-        self.btn_force_arm = QtWidgets.QPushButton("Force Arm")
-        self.btn_force_arm.clicked.connect(self._on_force_arm)
+        self.btn_arm = QtWidgets.QPushButton("Arm/Disarm")
+        self.btn_arm.clicked.connect(self._on_arm_disarm)
         
         self.combo_modes = QtWidgets.QComboBox()
         self.combo_modes.addItems(["Stabilize", "Alt Hold", "Loiter", "Auto", "Guided", "RTL", "Land"])
@@ -185,28 +190,78 @@ class DronePanelWidget(QtWidgets.QWidget):
         self.btn_set_mode = QtWidgets.QPushButton("Set Mode")
         self.btn_set_mode.clicked.connect(self._on_set_mode)
         
-        self.btn_mission_start = QtWidgets.QPushButton("Start Mission")
-        self.btn_mission_start.clicked.connect(self._on_mission_start)
-        
-        self.btn_abort_land = QtWidgets.QPushButton("Abort Landing")
-        self.btn_abort_land.clicked.connect(self._on_abort_land)
-        
-        layout.addWidget(self.btn_arm_disarm, 0, 0)
-        layout.addWidget(self.btn_force_arm, 0, 1)
+        layout.addWidget(self.btn_arm, 0, 0, 1, 2)
         layout.addWidget(self.combo_modes, 1, 0)
         layout.addWidget(self.btn_set_mode, 1, 1)
-        layout.addWidget(self.btn_mission_start, 2, 0)
-        layout.addWidget(self.btn_abort_land, 2, 1)
         
         return box
     
+    # Connection handlers
+    def _refresh_ports(self):
+        """Refresh COM ports"""
+        ports = [f"{p.device} - {p.description}" for p in serial.tools.list_ports.comports()]
+        self.combo_port.clear()
+        self.combo_port.addItems(ports if ports else ["No ports detected"])
+    
+    def _on_connect(self):
+        """Connect to drone"""
+        port = self.combo_port.currentText()
+        if "No ports" in port:
+            QtWidgets.QMessageBox.warning(self, "No Ports", "No COM ports detected")
+            return
+        
+        baud = int(self.combo_baud.currentText())
+        drone = self.drone_manager.get_drone(self.drone_id)
+        if drone:
+            drone.port = port.split(" - ")[0]
+            drone.baud = baud
+            drone.worker.configure(drone.port, baud)
+        
+        self.drone_manager.connect_drone(self.drone_id)
+        self.append_message(f"Connecting to {port} @ {baud}...")
+        
+        self.btn_connect.setEnabled(False)
+        self.btn_disconnect.setEnabled(True)
+    
+    def _on_disconnect(self):
+        """Disconnect from drone"""
+        self.drone_manager.disconnect_drone(self.drone_id)
+        self.append_message("Disconnected")
+        self.btn_connect.setEnabled(True)
+        self.btn_disconnect.setEnabled(False)
+    
+    def _check_connection(self):
+        """Check if connected"""
+        drone = self.drone_manager.get_drone(self.drone_id)
+        if not drone or not drone.connected:
+            QtWidgets.QMessageBox.warning(
+                self, "Not Connected",
+                f"{self.drone_name} is not connected!"
+            )
+            return False
+        return True
+    
+    # Command handlers
+    def _on_arm_disarm(self):
+        if not self._check_connection():
+            return
+        self.drone_manager.send_command(self.drone_id, 'arm_disarm')
+        self.append_message("Arm/Disarm command sent")
+    
+    def _on_set_mode(self):
+        if not self._check_connection():
+            return
+        mode = self.combo_modes.currentText()
+        modes = {"Stabilize": 0, "Alt Hold": 2, "Loiter": 5, "RTL": 6, "Land": 9, "Auto": 3, "Guided": 4}
+        if mode in modes:
+            self.drone_manager.send_command(self.drone_id, 'set_mode', modes[mode])
+            self.append_message(f"Setting mode to {mode}...")
+    
+    # Telemetry updates
     def _on_telemetry_update(self, drone_id, msg_type, data):
-        """Handle telemetry updates from drone manager"""
-        # Only process updates for this drone
         if drone_id != self.drone_id:
             return
         
-        # Route to appropriate update method
         if msg_type == "attitude":
             self._update_attitude(data)
         elif msg_type == "vfr_hud":
@@ -221,126 +276,41 @@ class DronePanelWidget(QtWidgets.QWidget):
             self.append_message(f"FCU: {data}")
     
     def _update_attitude(self, data):
-        """Update attitude displays"""
-        roll = data.get('roll', 0)
-        pitch = data.get('pitch', 0)
-        yaw = data.get('yaw', 0)
-        
-        self.hud.update_attitude(roll, pitch, yaw)
-        self.lbl_roll.setText(f"{math.degrees(roll):.2f}°")
-        self.lbl_pitch.setText(f"{math.degrees(pitch):.2f}°")
-        self.lbl_yaw.setText(f"{math.degrees(yaw):.2f}°")
+        self.hud.update_attitude(data.get('roll', 0), data.get('pitch', 0), data.get('yaw', 0))
+        self.lbl_roll.setText(f"{math.degrees(data.get('roll', 0)):.1f}°")
+        self.lbl_pitch.setText(f"{math.degrees(data.get('pitch', 0)):.1f}°")
+        self.lbl_yaw.setText(f"{math.degrees(data.get('yaw', 0)):.1f}°")
     
     def _update_vfr(self, data):
-        """Update VFR HUD data"""
-        airspeed = data.get('airspeed', 0)
-        groundspeed = data.get('groundspeed', 0)
-        alt = data.get('alt', 0)
-        heading = data.get('heading', 0)
-        
-        self.hud.update_vfr(heading, airspeed, groundspeed, alt)
+        self.hud.update_vfr(data.get('heading', 0), data.get('airspeed', 0), 
+                           data.get('groundspeed', 0), data.get('alt', 0))
     
     def _update_gps(self, data):
-        """Update GPS displays"""
-        fix_map = {0: "No GPS", 1: "No Fix", 2: "2D", 3: "3D", 4: "DGPS", 5: "RTK Float", 6: "RTK Fixed"}
-        
-        fix_type = data.get('fix_type', 0)
-        satellites = data.get('satellites', 0)
-        hdop = data.get('hdop', 0)
-        vdop = data.get('vdop', 0)
-        lat = data.get('lat', 0)
-        lon = data.get('lon', 0)
-        
-        self.lbl_gps_fix.setText(fix_map.get(fix_type, "Unknown"))
-        self.lbl_gps_sats.setText(str(satellites))
-        self.lbl_gps_hdop.setText(f"{hdop:.2f}")
-        self.lbl_gps_vdop.setText(f"{vdop:.2f}")
-        self.lbl_gps_lat.setText(f"{lat:.6f}")
-        self.lbl_gps_lon.setText(f"{lon:.6f}")
-        
-        self.hud.update_gps(fix_type, satellites)
+        fix_map = {0: "No GPS", 1: "No Fix", 2: "2D", 3: "3D", 4: "DGPS", 5: "RTK"}
+        self.lbl_gps_fix.setText(fix_map.get(data.get('fix_type', 0), "Unknown"))
+        self.lbl_gps_sats.setText(str(data.get('satellites', 0)))
+        self.lbl_gps_lat.setText(f"{data.get('lat', 0):.6f}")
+        self.lbl_gps_lon.setText(f"{data.get('lon', 0):.6f}")
+        self.hud.update_gps(data.get('fix_type', 0), data.get('satellites', 0))
     
     def _update_status(self, data):
-        """Update system status displays"""
-        voltage = data.get('voltage', 0)
-        current = data.get('current', 0)
-        remaining = data.get('remaining', -1)
-        
-        self.lbl_status_volt.setText(f"{voltage:.2f} V")
-        self.lbl_status_curr.setText(f"{current:.2f} A")
-        self.lbl_status_rem.setText(f"{remaining}%" if remaining >= 0 else "N/A")
-        
-        self.hud.update_battery(remaining)
+        self.lbl_status_volt.setText(f"{data.get('voltage', 0):.1f}V")
+        self.lbl_status_curr.setText(f"{data.get('current', 0):.1f}A")
+        rem = data.get('remaining', -1)
+        self.lbl_status_rem.setText(f"{rem}%" if rem >= 0 else "N/A")
+        self.hud.update_battery(rem)
     
     def _update_flight_mode(self, mode):
-        """Update flight mode display"""
         self.lbl_mode.setText(mode)
         self.hud.update_flight_mode(mode)
     
     def _on_connection_changed(self, drone_id):
-        """Handle connection state changes"""
         if drone_id != self.drone_id:
             return
-        
         drone = self.drone_manager.get_drone(drone_id)
         if drone:
             self.hud.update_connection_status(drone.connected)
             self.hud.update_armed_status(drone.armed)
     
     def append_message(self, msg):
-        """Append message to messages area"""
         self.message_area.append(msg)
-    
-    # Command button handlers
-    def _on_arm_disarm(self):
-        """Handle arm/disarm button"""
-        self.drone_manager.send_command(self.drone_id, 'arm_disarm')
-        self.append_message("Sending Arm/Disarm command...")
-    
-    def _on_force_arm(self):
-        """Handle force arm button"""
-        reply = QtWidgets.QMessageBox.question(
-            self, "Confirm Force Arm",
-            "Are you sure you want to force arm? This bypasses safety checks.",
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.No
-        )
-        if reply == QtWidgets.QMessageBox.Yes:
-            self.drone_manager.send_command(self.drone_id, 'force_arm')
-            self.append_message("Sending Force Arm command...")
-    
-    def _on_set_mode(self):
-        """Handle set mode button"""
-        mode_name = self.combo_modes.currentText()
-        mode_mapping = {
-            "Stabilize": 0, "Alt Hold": 2, "Loiter": 5,
-            "RTL": 6, "Land": 9, "Auto": 3, "Guided": 4
-        }
-        mode_id = mode_mapping.get(mode_name)
-        if mode_id is not None:
-            self.drone_manager.send_command(self.drone_id, 'set_mode', mode_id)
-            self.append_message(f"Setting mode to {mode_name}...")
-    
-    def _on_mission_start(self):
-        """Handle mission start button"""
-        reply = QtWidgets.QMessageBox.question(
-            self, "Confirm Mission Start",
-            "Are you sure you want to start the mission?",
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.No
-        )
-        if reply == QtWidgets.QMessageBox.Yes:
-            self.drone_manager.send_command(self.drone_id, 'mission_start')
-            self.append_message("Sending Mission Start command...")
-    
-    def _on_abort_land(self):
-        """Handle abort landing button"""
-        reply = QtWidgets.QMessageBox.question(
-            self, "Confirm Abort Landing",
-            "Are you sure you want to abort landing and RTL?",
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-            QtWidgets.QMessageBox.No
-        )
-        if reply == QtWidgets.QMessageBox.Yes:
-            self.drone_manager.send_command(self.drone_id, 'abort_land')
-            self.append_message("Sending Abort Landing command...")
