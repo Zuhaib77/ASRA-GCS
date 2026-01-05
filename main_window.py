@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QTabWidget, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QComboBox, QLabel
 from drone_manager import DroneManager
 from drone_panel_widget import DronePanelWidget
-from controller import Controller
+from simple_controller import SimpleController
 
 try:
     from professional_gcs_map import ProfessionalGCSMap
@@ -221,7 +221,7 @@ class MainWindow(QMainWindow):
         
         # Create controller for this drone
         drone = self.drone_manager.get_drone(drone_id)
-        controller = Controller(panel, drone.worker)
+        controller = SimpleController(panel, drone.worker)
         self.controllers[drone_id] = controller
         
         # Add tab
