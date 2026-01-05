@@ -1,7 +1,7 @@
 """
-ASRA GCS - Main Window (v2.0 Multi-Drone - Fixed)
-3 tabs: Combined view shows BOTH drones, individual tabs show ONE each
-Each tab has its own widget instances
+ASRA GCS - Main Window (v2.0 Multi-Drone - Refactored)
+Fixed layout with 3 tabs: Combined view, Drone 1, Drone 2
+Drones always visible, only update when connected
 """
 
 import sys
@@ -18,92 +18,129 @@ except ImportError:
 
 
 class MainWindow(QMainWindow):
-    """Main window with fixed 3-tab layout"""
+    """
+    Main application window for ASRA GCS v2.0
+    Fixed layout with 2 drone slots
+    """
     
     def __init__(self):
         super().__init__()
         self.setWindowTitle("ASRA GCS v2.0 - Multi-Drone Ground Control Station")
         self.resize(1800, 1000)
         
-        # Drone manager (2 drones)
+        # Multi-drone manager (2 drones)
         self.drone_manager = DroneManager(max_drones=2)
         
-        # Pre-create both drones  
-        self.drone_1_id = self.drone_manager.add_drone("", 57600, "Drone 1")
-        self.drone_2_id = self.drone_manager.add_drone("", 57600, "Drone 2")
+        # Pre-create both drones
+        self._create_fixed_drones()
         
-        # Controllers (shared across all tabs)
+        # Drone panels (drone_id -> DronePanelWidget)
+        self.drone_panels = {}
+        
+        # Controllers (drone_id -> SimpleController)
         self.controllers = {}
         
         # Setup UI
         self._create_menu_bar()
         self._create_ui()
         
-        # Telemetry update timer
+        # Timer for polling telemetry
         self.update_timer = QtCore.QTimer()
         self.update_timer.timeout.connect(self._update_all_drones)
         self.update_timer.start(100)  # 10 Hz
         
+    def _create_fixed_drones(self):
+        """Pre-create Drone 1 and Drone 2 (not connected yet)"""
+        # Drone 1
+        self.drone_1_id = self.drone_manager.add_drone("", 57600, "Drone 1")
+        
+        # Drone 2
+        self.drone_2_id = self.drone_manager.add_drone("", 57600, "Drone 2")
+        
     def _create_menu_bar(self):
         """Create menu bar"""
         menubar = self.menuBar()
+        
+        # File menu
         file_menu = menubar.addMenu("&File")
+        
         exit_action = QtWidgets.QAction("E&xit", self)
         exit_action.setShortcut("Ctrl+Q")
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
         
+        # View menu
+        view_menu = menubar.addMenu("&View")
+        
+        refresh_action = QtWidgets.QAction("&Refresh", self)
+        refresh_action.setShortcut("F5")
+        refresh_action.triggered.connect(self._refresh_ui)
+        view_menu.addAction(refresh_action)
+        
     def _create_ui(self):
-        """Create 3-tab UI"""
+        """Create main UI with 3 tabs"""
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
+        
         main_layout = QVBoxLayout(central_widget)
         
+        # Create 3-tab widget
         self.main_tabs = QTabWidget()
         
-        # Tab 1: Combined (new panels)
-        combined_tab = self._create_combined_tab()
-        self.main_tabs.addTab(combined_tab, "● Combined View")
+        # Tab 1: Combined View (both drones)
+        combined_tab = self._create_combined_view()
+        self.main_tabs.addTab(combined_tab, "Combined View")
         
-        # Tab 2: Drone 1 only (new panel)
-        drone1_tab = self._create_individual_tab(self.drone_1_id, "Drone 1")
+        # Tab 2: Drone 1 View
+        drone1_tab = self._create_drone_view(self.drone_1_id)
         self.main_tabs.addTab(drone1_tab, "Drone 1")
         
-        # Tab 3: Drone 2 only (new panel)
-        drone2_tab = self._create_individual_tab(self.drone_2_id, "Drone 2")
+        # Tab 3: Drone 2 View
+        drone2_tab = self._create_drone_view(self.drone_2_id)
         self.main_tabs.addTab(drone2_tab, "Drone 2")
         
         main_layout.addWidget(self.main_tabs)
+        
+        # Apply dark theme
         self._apply_theme()
         
-    def _create_combined_tab(self):
-        """Tab 1: Both drones side-by-side + map"""
+    def _create_combined_view(self):
+        """Create combined view with both drones side-by-side + map"""
         container = QWidget()
         layout = QVBoxLayout(container)
         
-        # Top: Horizontal split with both drones
+        # Top: Split view of both drones
         splitter = QSplitter(QtCore.Qt.Horizontal)
         
-        # LEFT: Drone 1 panel
+        # Drone 1 panel
         panel1 = DronePanelWidget(self.drone_1_id, self.drone_manager, self)
+        self.drone_panels[self.drone_1_id] = panel1
+        
+        # Create controller for Drone 1
         drone1 = self.drone_manager.get_drone(self.drone_1_id)
-        if self.drone_1_id not in self.controllers:
-            self.controllers[self.drone_1_id] = SimpleController(panel1, drone1.worker)
+        controller1 = SimpleController(panel1, drone1.worker)
+        self.controllers[self.drone_1_id] = controller1
+        
         splitter.addWidget(panel1)
         
-        # RIGHT: Drone 2 panel
+        # Drone 2 panel
         panel2 = DronePanelWidget(self.drone_2_id, self.drone_manager, self)
+        self.drone_panels[self.drone_2_id] = panel2
+        
+        # Create controller for Drone 2
         drone2 = self.drone_manager.get_drone(self.drone_2_id)
-        if self.drone_2_id not in self.controllers:
-            self.controllers[self.drone_2_id] = SimpleController(panel2, drone2.worker)
+        controller2 = SimpleController(panel2, drone2.worker)
+        self.controllers[self.drone_2_id] = controller2
+        
         splitter.addWidget(panel2)
         
+        # Equal split
         splitter.setSizes([900, 900])
+        
         layout.addWidget(splitter, stretch=3)
         
-        # Bottom: Map
-        if not hasattr(self, 'map_widget'):
-            self.map_widget = self._create_map_widget()
+        # Bottom: Global map
+        self.map_widget = self._create_map_widget()
         if self.map_widget:
             map_container = QWidget()
             map_layout = QVBoxLayout(map_container)
@@ -115,18 +152,17 @@ class MainWindow(QMainWindow):
         
         return container
     
-    def _create_individual_tab(self, drone_id, name):
-        """Individual drone tab (full view, no map)"""
-        panel = DronePanelWidget(drone_id, self.drone_manager, self)
-        # Controller already created in combined tab
-        return panel
+    def _create_drone_view(self, drone_id):
+        """Create individual drone view (no map)"""
+        # Return the existing panel (already created in combined view)
+        return self.drone_panels.get(drone_id)
     
     def _create_map_widget(self):
-        """Create map widget"""
+        """Create global map widget with loading overlay"""
         if ProfessionalGCSMap:
             return ProfessionalGCSMap()
         else:
-            placeholder = QLabel("Map (Loading...)")
+            placeholder = QLabel("Map Widget (Initializing...)")
             placeholder.setStyleSheet("background: #2a2a2a; color: white; padding: 20px;")
             placeholder.setAlignment(QtCore.Qt.AlignCenter)
             return placeholder
@@ -134,28 +170,33 @@ class MainWindow(QMainWindow):
     def _update_all_drones(self):
         """Update telemetry for all drones"""
         for drone_id, controller in self.controllers.items():
+            # Poll worker queue
             controller.update_ui()
             
-            # Update map
+            # Update map with drone positions using multi-drone method
             drone = self.drone_manager.get_drone(drone_id)
             if drone and drone.connected and hasattr(self.map_widget, 'update_uav_position_multi'):
                 gps_data = drone.telemetry.get('gps', {})
                 lat = gps_data.get('lat', 0)
                 lon = gps_data.get('lon', 0)
                 
+                attitude_data = drone.telemetry.get('attitude', {})
+                import math
+                yaw = attitude_data.get('yaw', 0)
+                heading = math.degrees(yaw)
+                
+                vfr_data = drone.telemetry.get('vfr_hud', {})
+                altitude = vfr_data.get('alt', 0)
+                speed = vfr_data.get('groundspeed', 0)
+                
                 if lat != 0 or lon != 0:
-                    attitude_data = drone.telemetry.get('attitude', {})
-                    import math
-                    yaw = attitude_data.get('yaw', 0)
-                    heading = math.degrees(yaw)
-                    
-                    vfr_data = drone.telemetry.get('vfr_hud', {})
-                    altitude = vfr_data.get('alt', 0)
-                    speed = vfr_data.get('groundspeed', 0)
-                    
                     self.map_widget.update_uav_position_multi(
                         drone_id, lat, lon, heading, altitude, speed, drone.color
                     )
+    
+    def _refresh_ui(self):
+        """Refresh UI"""
+        self.update()
     
     def _apply_theme(self):
         """Apply dark theme"""
@@ -181,6 +222,10 @@ class MainWindow(QMainWindow):
     
     def closeEvent(self, event):
         """Clean up on close"""
+        # Stop update timer
         self.update_timer.stop()
+        
+        # Cleanup drone manager
         self.drone_manager.cleanup()
+        
         event.accept()
