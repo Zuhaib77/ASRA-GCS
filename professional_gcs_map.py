@@ -420,17 +420,21 @@ class ProfessionalGCSMap(QWidget):
         # Start tile downloader after a delay to prevent blocking
         QTimer.singleShot(500, self._start_tile_downloader)  # Reduced delay
         
-        # UAV state
+        # UAV state (backward compatible - single drone)
         self.uav_position = None  # (lat, lon)
         self.uav_heading = 0.0
         self.uav_altitude = 0.0
         self.uav_speed = 0.0
         self.flight_mode = FlightMode.MANUAL
         
+        # Multi-drone support (v2.0)
+        self.uav_positions = {}  # drone_id -> {'lat': float, 'lon': float, 'heading': float, 'alt': float, 'speed': float, 'color': str}
+        self.flight_paths = {}  # drone_id -> deque of (lat, lon)
+        
         # Home position
         self.home_position = None  # (lat, lon)
         
-        # Flight path
+        # Flight path (backward compatible)
         self.flight_path = deque(maxlen=1000)
         self.show_flight_path = True
         
@@ -1192,6 +1196,40 @@ class ProfessionalGCSMap(QWidget):
     
     def set_flight_mode(self, mode: FlightMode):
         """Set flight mode"""
+        self.update()
+    
+    def update_uav_position_multi(self, drone_id: str, lat: float, lon: float, heading: float = 0, 
+                                  altitude: float = 0, speed: float = 0, color: str = "#FF0000"):
+        """
+        Update UAV position for multi-drone support (v2.0)
+        
+        Args:
+            drone_id: Unique drone identifier
+            lat: Latitude
+            lon: Longitude  
+            heading: Heading in degrees
+            altitude: Altitude in meters
+            speed: Speed in m/s
+            color: Drone color for display
+        """
+        # Store position
+        self.uav_positions[drone_id] = {
+            'lat': lat,
+            'lon': lon,
+            'heading': heading,
+            'alt': altitude,
+            'speed': speed,
+            'color': color
+        }
+        
+        # Add to flight path
+        if drone_id not in self.flight_paths:
+            self.flight_paths[drone_id] = deque(maxlen=1000)
+        
+        if lat != 0 or lon != 0:
+            self.flight_paths[drone_id].append((lat, lon))
+        
+        # Update display
         self.update()
     
     def add_waypoint(self, lat: float, lon: float, altitude: float = 100):
