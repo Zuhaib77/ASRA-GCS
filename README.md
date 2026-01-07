@@ -1,235 +1,215 @@
-# ASRA Ground Control Station
+# ASRA GCS v2.0 - Multi-Drone Ground Control Station
 
-<div align="center">
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/Zuhaib77/ASRA-GCS/releases)
+[![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/Zuhaib77/ASRA-GCS)
 
-![ASRA GCS Logo](resources/logo.png)
+Professional Ground Control Station for multi-drone UAV operations with real-time telemetry, MAVLink communication, and advanced mapping capabilities.
 
-**Professional Ground Control Station for ArduPilot Drones**
+![ASRA GCS v2.0](resources/logo.png)
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Zuhaib77/ASRA-GCS/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)](https://github.com/Zuhaib77/ASRA-GCS)
-[![License](https://img.shields.io/badge/license-TBD-orange.svg)](LICENSE)
+## 🚀 What's New in v2.0
 
-</div>
+### Major Features
+- ✨ **Multi-Drone Support**: Control up to 2 drones simultaneously
+- 🎨 **Redesigned UI**: Modern React-inspired interface with sidebar navigation
+- 🗺️ **Enhanced Map**: Professional mapping with zoom 10-19, crosshair, and provider info
+- 📊 **Status Cards**: Quick-glance drone metrics with color-coded indicators
+- 🎯 **Full HUD Displays**: 400x350 HUD on all views with artificial horizon
+- 📡 **Comparison Panel**: Side-by-side drone metrics comparison
+- 🔗 **Centralized Connection**: Unified sidebar for all drone connections
 
----
+### UI Layout
+```
+┌──────────┬─────────────────────────────────────┐
+│          │  Tabs: Combined | Drone 1 | Drone 2│
+│ SIDEBAR  ├──────────┬──────────┬──────────────┤
+│          │  Status  │          │              │
+│ Connect  │  +HUDs   │   Map    │  Telemetry   │
+│ Drones   │          │          │   Messages   │
+│          │          │  Compare │              │
+└──────────┴──────────┴──────────┴──────────────┘
+```
 
-## 🚀 Features
+## 📥 Installation
 
-### Real-Time Telemetry & Control
-- **Professional HUD** - Artificial horizon with pitch ladder, roll indicator, and flight instruments
-- **Satellite Map Display** - FREE Esri World Imagery with offline caching
-- **Flight Control** - Arm/disarm, mode changes, mission commands
-- **Live Telemetry** - Airspeed, altitude, GPS, battery monitoring
-- **Message Console** - Flight controller messages with smart suggestions
+### Option 1: Installer (Recommended)
+1. Download the latest installer from [Releases](https://github.com/Zuhaib77/ASRA-GCS/releases)
+2. Run `ASRA_GCS_v2.0_Setup.exe`
+3. Follow the installation wizard
+4. Launch from Start Menu
 
-### Professional Interface
-- **Mission Planner Style** - Familiar layout for drone operators
-- **Dark/Light Themes** - Toggle between themes with persistent preferences
-- **Responsive Design** - Optimized for various screen sizes
-- **Smooth Animations** - 60 FPS rendering for fluid user experience
-
-### Advanced Mapping
-- **Multiple Map Providers** - OpenStreetMap, Esri Satellite, CartoDB, Stamen
-- **Offline Tile Caching** - SQLite-based cache for offline operation
-- **Flight Path Tracking** - Real-time UAV position and historical path
-- **Performance Optimized** - Efficient tile loading and rendering
-
----
-
-## 📦 Installation
-
-### Windows (Recommended)
-
-**Option 1: Installer (Easiest)**
-1. Download `ASRA_GCS_Setup_v1.0.exe` from [Releases](https://github.com/Zuhaib77/ASRA-GCS/releases)
-2. Run the installer
-3. Launch from Start Menu
-
-**Option 2: Standalone Executable**
-1. Download `ASRA_GCS_v1.0.exe` from [Releases](https://github.com/Zuhaib77/ASRA-GCS/releases)
-2. Run directly (no installation needed)
-
-### From Source
-
+### Option 2: Run from Source
 ```bash
 # Clone repository
 git clone https://github.com/Zuhaib77/ASRA-GCS.git
 cd ASRA-GCS
 
-# Create virtual environment
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Linux
-
 # Install dependencies
 pip install -r requirements.txt
 
 # Run application
-python asra_gcs_main.py
+python asra_gcs_v2.py
 ```
 
----
+## 🎮 Quick Start
 
-## 🎯 Quick Start
+1. **Launch ASRA GCS v2.0**
+2. **Connect Drone**:
+   - Select COM port in left sidebar
+   - Choose baud rate (57600 or 115200)
+   - Click "Connect"
+3. **Monitor Telemetry**: View live data on HUD and status cards
+4. **Control Drone**: Use Arm/Disarm and mode change buttons
+5. **Track on Map**: See real-time position and flight path
 
-1. **Launch ASRA GCS**
-2. **Select Connection**:
-   - Choose COM port from dropdown
-   - Select baud rate (default: 57600)
-   - Click **Connect**
-3. **Monitor Telemetry**:
-   - HUD displays attitude and flight data
-   - Map shows UAV position in real-time
-   - Messages panel shows flight controller status
-4. **Control Vehicle**:
-   - **Arm/Disarm** - Enable/disable motors
-   - **Change Mode** - Select flight mode (Stabilize, Loiter, Auto, RTL, etc.)
-   - **Mission Commands** - Start mission, abort landing
+## 🔥 Key Features
 
----
+### Multi-Drone Operations
+- Simultaneous control of 2 drones
+- Independent telemetry streams
+- Color-coded identification (Cyan #00d4ff, Purple #a78bfa)
+- Unified and individual drone views
 
-## 🎨 Features in Detail
+### Professional HUD
+- Artificial horizon with pitch/roll
+- Heading compass
+- Altitude (MSL & AGL)
+- Speed (air & ground)
+- Climb rate indicator
 
-### Artificial Horizon HUD
-- **Pitch Ladder** - Visual reference for pitch angle
-- **Roll Indicator** - Arc display with numeric readout
-- **Heading Tape** - Compass heading with cardinal directions
-- **Flight Instruments** - Airspeed, altitude, vertical speed
-- **Status Indicators** - Connection, armed status, GPS fix, battery level
+### Advanced Mapping
+- **Multiple Providers**: Esri Satellite, OpenStreetMap, CartoDB
+- **Zoom Levels**: 10-19 for detailed mission planning
+- **Crosshair**: Center targeting point
+- **Coordinates**: Real-time lat/lon display
+- **Flight Paths**: Historical trail visualization
+- **Offline Cache**: Tile caching for disconnected ops
 
-### Interactive Map
-- **Pan & Zoom** - Mouse drag to pan, scroll to zoom
-- **UAV Tracking** - Real-time position with heading indicator
-- **Home Position** - Launch point marker
-- **Flight Path** - Historical trail
-- **Right-Click Context Menu** - Quick actions and information
+### Status Cards
+Quick metrics at a glance:
+- Armed/Disarmed status
+- Battery level & voltage
+- Signal strength (RSSI)
+- GPS satellites
+- Distance to home
+- Altitude, Speed, Heading
+- Flight mode
 
-### Flight Controller Messages
-- **Color-Coded** - Red for errors, orange for warnings, cyan for info
-- **Smart Suggestions** - Automated troubleshooting hints
-- **Message Filtering** - Focus on important notifications
+### Telemetry Monitoring
+- Real-time sensor data
+- MAVLink message log
+- Attitude (roll, pitch, yaw)
+- GPS position & fix
+- Battery status
+- System health
 
----
+## 📋 System Requirements
 
-## ⚙️ Configuration
+- **OS**: Windows 10/11 (64-bit)
+- **RAM**: 4GB minimum, 8GB recommended
+- **Storage**: 500MB free space
+- **Graphics**: DirectX 11 compatible
+- **Internet**: Required for map tiles (offline cache available)
 
-Configuration file: `config.json` (auto-created on first run)
+## 🛠️ Technology Stack
 
-### Key Settings
+- **GUI Framework**: PyQt5
+- **MAVLink**: pymavlink
+- **Serial Communication**: pyserial
+- **Mapping**: Custom tile downloader with caching
+- **Configuration**: JSON-based config management
+- **Logging**: Advanced logging with rotation
 
-```json
-{
-  "map": {
-    "default_provider": "Esri World Imagery",
-    "default_lat": 28.6139,
-    "default_lon": 77.2090,
-    "default_zoom": 12
-  },
-  "ui": {
-    "theme": "dark",
-    "update_rate_ms": 100
-  },
-  "mavlink": {
-    "heartbeat_timeout": 3.0,
-    "default_baud": 57600
-  }
-}
-```
+## 📖 Documentation
 
----
+- **User Manual**: [docs/USER_MANUAL.md](docs/USER_MANUAL.md) - Complete usage guide
+- **Build Guide**: [docs/BUILD.md](docs/BUILD.md) - How to build from source
+- **What's New**: [V2_WHATS_NEW.md](V2_WHATS_NEW.md) - v2.0 changelog
+- **Changelog**: [CHANGELOG.md](CHANGELOG.md) - Version history
 
-## 🛠️ Troubleshooting
+## 🎯 Use Cases
 
-### Can't Connect to Vehicle
+- **Research & Development**: UAV testing and development
+- **Education**: Student projects and training
+- **Hobby**: RC aircraft and drone enthusiasts
+- **Commercial**: Inspection, mapping, surveillance
+- **Multi-Drone**: Swarm operations and coordinated missions
 
-**Check:**
-- ✅ Correct COM port selected
-- ✅ Correct baud rate (57600 or 115200)
-- ✅ No other software using the port (Mission Planner, QGroundControl)
-- ✅ USB cable properly connected
-- ✅ Flight controller powered on
+## 🔧 Configuration
 
-### No Telemetry Updates
+Edit `config.py` to customize:
+- Map providers and tile sources
+- Update rates and performance
+- Zoom limits
+- Cache settings
+- MAVLink stream rates
+- UI preferences
 
-**Check:**
-- ✅ Connection established (check status indicator)
-- ✅ MAVLink stream rates configured on flight controller
-- ✅ Messages panel for errors
+## 🐛 Troubleshooting
 
-### PreArm Failures
+### Connection Issues
+- Check COM port selection
+- Verify baud rate (usually 57600 or 115200)
+- Ensure MAVLink is enabled on drone
+- Try different USB cable/port
 
-**Common Issues:**
-- "Need 3D Fix" → Wait for GPS lock (clear sky view required)
-- "Compass variance" → Calibrate compass away from metal objects
-- "RC not calibrated" → Calibrate radio in Mission Planner/QGC
+### Map Not Loading
+- Check internet connection
+- Try different map provider
+- Clear cache folder
+- Verify firewall settings
 
----
-
-## 📚 Documentation
-
-- **[User Manual](docs/USER_MANUAL.md)** - Detailed usage guide
-- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - For contributors and developers
-- **[Development Journey](docs/DEVELOPMENT_JOURNEY.md)** - Project evolution and learnings
-- **[CHANGELOG](CHANGELOG.md)** - Version history
-
----
-
-## 🚀 Roadmap
-
-### v1.0 (Current)
-- ✅ Single drone support
-- ✅ Professional HUD and map display
-- ✅ Dark/Light theme toggle
-- ✅ Windows installer
-
-### v2.0 (Planned)
-- 🔜 **Multi-Drone Support** - Control up to 2 drones simultaneously
-- 🔜 Flexible layout system (tabs/grid/master-detail)
-- 🔜 Advanced map behaviors (follow selected, show all, manual)
-- 🔜 Flight data logging (CSV/JSON/tlog)
-- 🔜 Ubuntu support
-
----
+See [USER_MANUAL.md](docs/USER_MANUAL.md) for detailed troubleshooting.
 
 ## 🤝 Contributing
 
-Contributions welcome! Please read [DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md) first.
-
+Contributions welcome! Please:
 1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
----
+## 📜 License
 
-## 📝 License
-
-License TBD - Stay tuned for updates
-
----
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- **[PyMavlink](https://github.com/ArduPilot/pymavlink)** - MAVLink protocol implementation
-- **[PyQt5](https://www.riverbankcomputing.com/software/pyqt/)** - GUI framework
-- **[ArduPilot](https://ardupilot.org/)** - Flight controller firmware
-- **[Esri](https://www.esri.com/)** - FREE World Imagery tiles
-- **[OpenStreetMap](https://www.openstreetmap.org/)** - FREE map data
+- **PyQt5** - GUI framework
+- **pymavlink** - MAVLink protocol implementation
+- **OpenStreetMap** - Map tile contributors
+- **Esri** - World Imagery satellite tiles
+- **Community** - Testers and contributors
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/Zuhaib77/ASRA-GCS/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Zuhaib77/ASRA-GCS/discussions)
+- **Documentation**: [docs/](docs/)
+
+## 🗺️ Roadmap
+
+- [ ] Support for 4+ drones
+- [ ] Mission planning interface
+- [ ] Flight log playback
+- [ ] Real-time video streaming
+- [ ] Geofencing and no-fly zones
+- [ ] Auto-update mechanism
+- [ ] Mobile companion app
+
+## 📊 Project Stats
+
+- **Version**: 2.0.0
+- **Status**: Production Ready
+- **Last Updated**: January 2026
+- **Language**: Python
+- **Lines of Code**: ~15,000+
 
 ---
 
-## 📧 Contact
+**Made with ❤️ for the UAV community**
 
-**Developer**: Zuhaib77  
-**GitHub**: [github.com/Zuhaib77](https://github.com/Zuhaib77)  
-**Project**: [github.com/Zuhaib77/ASRA-GCS](https://github.com/Zuhaib77/ASRA-GCS)
-
----
-
-<div align="center">
-
-**Made with ❤️ for the drone community**
-
-</div>
+*Star ⭐ this repository if you find it useful!*
