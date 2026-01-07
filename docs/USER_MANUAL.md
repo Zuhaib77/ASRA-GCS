@@ -1,553 +1,381 @@
-# ASRA GCS - User Manual
-
-> **Version**: 1.0.0  
-> **Last Updated**: January 5, 2026  
-> **Platform**: Windows, Linux (Ubuntu)
-
----
+# ASRA GCS v2.0 - User Manual
 
 ## Table of Contents
-
-1. [Introduction](#introduction)
-2. [Installation](#installation)
-3. [Getting Started](#getting-started)
-4. [User Interface](#user-interface)
-5. [Connecting to Your Drone](#connecting-to-your-drone)
-6. [Flight Operations](#flight-operations)
-7. [Map Features](#map-features)
-8. [Configuration](#configuration)
-9. [Troubleshooting](#troubleshooting)
-10. [FAQ](#faq)
-11. [Safety Guidelines](#safety-guidelines)
-
----
-
-## Introduction
-
-ASRA Ground Control Station (GCS) is a professional-grade ground control software for ArduPilot-based drones. It provides real-time telemetry monitoring, flight control, and mission planning capabilities through an intuitive interface.
-
-### Key Features
-- **Real-time HUD** - Artificial horizon with flight instruments
-- **Satellite Maps** - FREE Esri World Imagery with offline caching
-- **Flight Control** - Arm, disarm, mode changes, mission commands
-- **Telemetry Display** - Live data from your drone
-- **Message Console** - Flight controller status and diagnostics
-
-### System Requirements
-- **OS**: Windows 10/11 or Ubuntu 20.04+
-- **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 500MB for application + cache space
-- **Display**: 1280x720 minimum resolution
-- **Python**: 3.7+ (for source installation only)
+1. [Installation](#installation)
+2. [Quick Start](#quick-start)
+3. [User Interface](#user-interface)
+4. [Connecting Drones](#connecting-drones)
+5. [Map Controls](#map-controls)
+6. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Installation
 
-### Windows Installation
+### System Requirements
+- **Operating System**: Windows 10/11 (64-bit)
+- **RAM**: 4GB minimum, 8GB recommended
+- **Storage**: 500MB free space
+- **Graphics**: DirectX 11 compatible
+- **Internet**: Required for map tiles (offline cache available)
 
-**Method 1: Installer (Recommended)**
+### Installation Steps
 
-1. Download `ASRA_GCS_Setup_v1.0.exe` from [GitHub Releases](https://github.com/Zuhaib77/ASRA-GCS/releases)
-2. Double-click the installer
-3. Follow the installation wizard
-4. Launch from Start Menu → ASRA GCS
+#### Option 1: Installer (Recommended)
+1. Download `ASRA_GCS_v2.0_Setup.exe`
+2. Double-click to run installer
+3. Follow installation wizard
+4. Launch from Start Menu or Desktop shortcut
 
-**Method 2: Standalone Executable**
-
-1. Download `ASRA_GCS_v1.0.exe` from releases
-2. Place in a folder of your choice
-3. Double-click to run (no installation needed)
-
-### Linux Installation
-
-```bash
-# Install dependencies
-sudo apt update
-sudo apt install python3 python3-pip python3-pyqt5
-
-# Clone or download release
-git clone https://github.com/Zuhaib77/ASRA-GCS.git
-cd ASRA-GCS
-
-# Install Python dependencies
-pip3 install -r requirements.txt
-
-# Run
-python3 asra_gcs_main.py
-```
+#### Option 2: Python Source
+1. Install Python 3.8+ from python.org
+2. Clone repository:
+   ```
+   git clone https://github.com/Zuhaib77/ASRA-GCS.git
+   cd ASRA_GCS_with_map
+   ```
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+4. Run application:
+   ```
+   python asra_gcs_v2.py
+   ```
 
 ---
 
-## Getting Started
+## Quick Start
 
 ### First Launch
+1. **Start Application**: Launch ASRA GCS v2.0
+2. **Main Window Opens**: You'll see 3 tabs and a connection sidebar
+3. **Connect Drone**: Use left sidebar to configure connection
 
-1. **Launch ASRA GCS**
-   - Windows: Start Menu → ASRA GCS
-   - Linux: `python3 asra_gcs_main.py`
-
-2. **Initial Setup**
-   - Application creates configuration files automatically
-   - Default settings are optimized for most users
-   - No additional configuration required
-
-3. **Interface Overview**
-   - **Left**: Artificial Horizon HUD
-   - **Center**: Satellite Map
-   - **Right**: Telemetry panels
-   - **Bottom**: Connection controls and messages
+### 5-Minute Setup
+1. **Select Port**: Choose COM port for your drone (e.g., COM3)
+2. **Set Baud Rate**: Usually 57600 or 115200
+3. **Click Connect**: Connection status will show "Connected"
+4. **View Telemetry**: HUD and status cards update automatically
+5. **Control Drone**: Use Arm/Disarm and mode change buttons
 
 ---
 
 ## User Interface
 
-### HUD (Heads-Up Display)
-
-The HUD provides critical flight information at a glance:
-
-**Components:**
-- **Artificial Horizon** - Shows aircraft attitude (pitch and roll)
-- **Pitch Ladder** - Vertical reference lines at 10° intervals
-- **Roll Indicator** - Arc with degree markings
-- **Heading Tape** - Compass strip showing current heading
-- **Speed Tape** - Airspeed indicator (left side)
-- **Altitude Tape** - Current altitude (right side)
-- **Status Indicators**:
-  - 🟢 **CONNECTED** / 🔴 **DISCONNECTED**
-  - 🔴 **ARMED** / ⚪ **DISARMED**
-  - GPS fix type and satellite count
-  - Battery percentage with color coding
-
-**Reading the HUD:**
-- **Level Flight**: Horizon line horizontal, zero pitch/roll
-- **Climbing**: Horizon line below center
-- **Descending**: Horizon line above center
-- **Banking**: Horizon line tilted
-
-### Map Display
-
-Interactive satellite map with drone tracking:
-
-**Features:**
-- **Pan**: Click and drag
-- **Zoom**: Mouse scroll wheel or +/- buttons
-- **UAV Marker**: Real-time position with heading indicator
-- **Home Marker**: Launch/RTL point
-- **Flight Path**: Historical trail (red line)
-
-**Map Controls:**
-- Right-click for context menu
-- Double-click to center on location
-- Map provider selection (top-right dropdown)
-
-### Telemetry Panels
-
-**Attitude Panel:**
-- Roll: ±180°
-- Pitch: ±90°
-- Yaw: 0-360°
-- Flight Mode: Current mode name
-
-**GPS Panel:**
-- Fix Type: No GPS, 2D, 3D, DGPS, RTK
-- Satellites: Number tracked
-- HDOP/VDOP: Position dilution (lower is better)
-- Lat/Lon: Decimal degrees
-
-**System Status:**
-- Voltage: Battery voltage (V)
-- Current: Current draw (A)
-- Battery: Remaining capacity (%)
-
-### Vehicle Actions
-
-**Available Commands:**
-- **Arm/Disarm**: Enable/disable motors
-- **Force Arm**: Bypass pre-arm checks (⚠️ use with caution)
-- **Set Mode**: Change flight mode
-- **Start Mission**: Begin autonomous mission
-- **Abort Landing**: Return to launch (RTL)
-
-### Messages Console
-
-Displays real-time messages from flight controller:
-
-**Message Types:**
-- 🔴 **Errors**: Critical issues requiring attention
-- 🟠 **Warnings**: Non-critical alerts
-- 🔵 **Info**: Status updates
-
-**Smart Suggestions:**
-- Yellow text appears with troubleshooting hints
-- Example: "Need 3D Fix" → "Suggestion: Ensure clear sky view for GPS lock"
-
----
-
-## Connecting to Your Drone
-
-### Serial (USB) Connection
-
-1. **Connect Hardware**
-   - Plug USB cable from flight controller to computer
-   - Wait for drivers to install (Windows)
-
-2. **Select Port**
-   - Click **Refresh** button
-   - Select COM port from dropdown (e.g., "COM3 - USB Serial Device")
-   - Common ports: COM3, COM4 (Windows) | /dev/ttyUSB0, /dev/ttyACM0 (Linux)
-
-3. **Select Baud Rate**
-   - Default: **57600** (most common)
-   - Try 115200 if 57600 doesn't work
-
-4. **Connect**
-   - Click **Connect** button
-   - Wait for "Connected" message
-   - HUD should show "CONNECTED" status
-
-### UDP/TCP Connection
-
-For wireless telemetry or SITL:
-
-1. **Configure Connection String** (in code or future UI)
-   - UDP: `udp:127.0.0.1:14550` (SITL)
-   - TCP: `tcp:192.168.1.100:5760` (telemetry module)
-
-2. **Connect** as normal
-
-### Connection Troubleshooting
-
-**"No ports detected"**
-- Check USB cable connection
-- Try different USB port
-- Restart computer
-- Install FTDI/CH340 drivers if needed
-
-**"Connection failed"**
-- Verify correct COM port
-- Try different baud rate (115200)
-- Close other GCS software (Mission Planner, QGC)
-- Check flight controller is powered
-
-**"Connected but no telemetry"**
-- Wait 10-15 seconds for initial sync
-- Check Messages panel for errors
-- Verify MAVLink stream rates on flight controller
-
----
-
-## Flight Operations
-
-### Pre-Flight Checks
-
-Before arming, verify:
-1. ✅ GPS has 3D fix (6+ satellites)
-2. ✅ Battery voltage adequate
-3. ✅ No PreArm errors in Messages
-4. ✅ Correct flight mode selected
-5. ✅ Home position set on map
-
-### Arming the Vehicle
-
-**Normal Arm:**
-1. Ensure all pre-arm checks pass (watch Messages panel)
-2. Click **Arm/Disarm** button
-3. Wait for confirmation message
-4. HUD shows **ARMED** status
-
-**Force Arm (Emergency Only):**
-1. Click **Force Arm**
-2. **Confirm** dialog (⚠️ bypasses safety checks)
-3. Use only if you understand pre-arm failures
-
-### Changing Flight Mode
-
-1. Select mode from dropdown:
-   - **Stabilize**: Manual with self-leveling
-   - **Alt Hold**: Hold altitude, manual horizontal
-   - **Loiter**: Hold position and altitude
-   - **Auto**: Follow mission waypoints
-   - **Guided**: External command control
-   - **RTL**: Return to launch
-   - **Land**: Automatic landing
-
-2. Click **Set Mode**
-3. Wait for confirmation in Messages panel
-4. HUD shows new mode name
-
-### In-Flight Monitoring
-
-**Watch for:**
-- Stable GPS (no "GPS Glitch" messages)
-- Battery level (minimum 20% for RTL)
-- Altitude and speed (within safe limits)
-- Flight mode (correct for current operation)
-
-**Warning Signs:**
-- ⚠️ "EKF variance" warnings
-- ⚠️ "GPS Glitch" messages
-- ⚠️ Battery below 30%
-- ⚠️ Unexpected flight mode changes
-
-### Emergency Procedures
-
-**Lost Control Link:**
-- Vehicle should activate failsafe (RTL or LAND)
-- Monitor map for vehicle returning home
-
-**Low Battery:**
-- Initiate RTL immediately (click RTL mode)
-- Or manually land if close
-
-**GPS Failure:**
-- Switch to **Stabilize** or **Alt Hold**
-- Manually fly to safe landing area
-- Do NOT use Auto, Loiter, or RTL
-
-**Uncommanded Movement:**
-- Switch to **Stabilize**
-- Land immediately
-- Investigate compass or GPS issues after landing
-
----
-
-## Map Features
-
-### Map Providers
-
-Switch between providers via dropdown:
-
-- **Esri World Imagery**: High-quality satellite (default)
-- **OpenStreetMap**: Street map with labels
-- **CartoDB Positron**: Clean, minimal basemap
-- **Stamen Terrain**: Topographic map
-
-All providers are **FREE** and require no API keys.
-
-### Offline Caching
-
-- Tiles auto-cache as you pan/zoom
-- Cache stored in `cache/tiles.db` (SQLite)
-- Works offline after tiles downloaded
-- Clear cache: Delete `cache/tiles.db` and restart
-
-### Map Overlays
-
-**UAV Marker:**
-- Red triangle pointing in heading direction
-- Updates in real-time (~5-10 Hz)
-- Size scales with zoom level
-
-**Home Marker:**
-- Green circular marker
-- Set automatically on arm
-- Displayed as "H" icon
-
-**Flight Path:**
-- Red line showing historical positions
-- Limited to last 1000 points
-- Clear via: Right-click → "Clear Flight Path"
-
-### Map Interactions
-
-**Pan:** Click and drag  
-**Zoom:** Scroll wheel or +/- buttons  
-**Center on UAV:** Double-click UAV marker  
-**Context Menu:** Right-click on map
-
-Future versions will support:
-- Waypoint creation
-- Geofence drawing
-- Distance/bearing measurements
-
----
-
-## Configuration
-
-### Configuration File
-
-Location: `config.json` (in application directory)
-
-Auto-created on first run with defaults. Edit manually or wait for GUI settings (v2.0).
-
-### Key Settings
-
-```json
-{
-  "map": {
-    "default_provider": "Esri World Imagery",
-    "default_lat": 28.6139,
-    "default_lon": 77.2090,
-    "default_zoom": 12,
-    "max_cache_tiles": 400
-  },
-  "ui": {
-    "theme": "dark",
-    "update_rate_ms": 100
-  },
-  "mavlink": {
-    "heartbeat_timeout": 3.0,
-    "default_baud": 57600
-  }
-}
+### Layout Overview
+
+```
+┌──────────┬─────────────────────────────────────┐
+│          │  Tabs: Combined | Drone 1 | Drone 2│
+│ SIDEBAR  ├──────────┬──────────┬──────────────┤
+│          │  Status  │          │              │
+│ Drone 1  │  +HUDs   │   Map    │  Telemetry   │
+│ Drone 2  │          │          │   Messages   │
+│          │          │  Compare │              │
+└──────────┴──────────┴──────────┴──────────────┘
 ```
 
-**Common Customizations:**
-- `default_lat/lon`: Change starting map position
-- `theme`: "dark" or "light"
-- `default_baud`: Change default baud rate
+### Components
 
-### Theme Toggle
+#### Left Sidebar
+- **Connection Controls**: Port, baud rate, connect/disconnect
+- **System Status**: Shows connected drones count
+- **Drone 1 Panel**: Connection for first drone
+- **Drone 2 Panel**: Connection for second drone
 
-**Switching Themes:**
-1. Edit `config.json`
-2. Change `"theme": "dark"` to `"theme": "light"`
-3. Restart application
+#### Combined View Tab
+- **Left Column**: Status cards + Full HUDs for both drones
+- **Center Column**: Global map + Comparison panel
+- **Right Column**: Telemetry message log
 
-(GUI toggle coming in v2.0)
+#### Individual Drone Tabs
+- **Large HUD**: Primary flight display
+- **Telemetry Panels**: Detailed sensor data
+- **Control Buttons**: Arm, Disarm, Mode changes
 
-### Map Position Persistence
+### Status Card Elements
+- **Drone Name**: Color-coded indicator
+- **Armed Status**: ARMED (green) or DISARMED (gray)
+- **Quick Stats**: Battery, Signal, Satellites, Distance
+- **Flight Data**: Altitude, Speed, Heading
+- **Mode Display**: Current flight mode
+- **Arm Button**: Quick arm/disarm control
 
-Last map position auto-saves and restores on startup.
+### HUD Display
+- **Artificial Horizon**: Pitch and roll indicators
+- **Heading Compass**: Top center
+- **Altitude**: Right side (MSL and AGL)
+- **Speed**: Left side (air and ground)
+- **Climb Rate**: Vertical speed indicator
 
-**Reset Map:**
-- Edit `config.json` and change `default_lat/lon/zoom`
-- Or delete config file to reset all settings
+---
+
+## Connecting Drones
+
+### Connection Process
+
+#### Step 1: Identify COM Port
+1. Connect drone to computer via USB/serial
+2. Open Device Manager (Windows)
+3. Look under "Ports (COM & LPT)"
+4. Note COM port number (e.g., COM3)
+
+#### Step 2: Configure Connection
+1. In **Connection Sidebar**, find "Drone 1" section
+2. Click **Port** dropdown
+3. Select your COM port
+4. Select **Baud Rate** (check drone documentation, usually 57600 or 115200)
+
+#### Step 3: Connect
+1. Click **Connect** button
+2. Status changes to "Connecting..."
+3. When successful: "● Connected" (green)
+4. Telemetry data starts appearing
+
+#### Step 4: Verify Connection
+- HUD should show live attitude data
+- Status card shows real-time telemetry
+- Map displays drone position (if GPS lock)
+
+### Connecting Multiple Drones
+1. Connect Drone 1 first (follow steps above)
+2. Connect second drone to different COM port  
+3. Configure Drone 2 panel with its COM port
+4. Click Connect for Drone 2
+5. Both drones now visible in Combined View
+
+### Disconnecting
+1. Click **Disconnect** button in sidebar
+2. Status changes to "● Disconnected" (red)
+3. Telemetry stops updating
+
+---
+
+## Map Controls
+
+### Navigation
+- **Zoom In**: Scroll wheel up OR click zoom buttons
+- **Zoom Out**: Scroll wheel down OR click zoom buttons
+- **Pan**: Click and drag map
+- **Zoom Range**: 10 (far) to 19 (close)
+
+### Map Features
+
+#### Crosshair
+- **Green crosshair** at map center
+- Shows targeting/planning point
+- Coordinates displayed at bottom left
+
+#### Coordinate Display (Bottom Left)
+```
+Center: 28.614300°, 77.209000° | Zoom: 15
+```
+- **Center**: Crosshair position (lat/lon)
+- **Zoom**: Current zoom level
+
+#### Map Info (Bottom Right)
+```
+Provider: Esri World Imagery
+Zoom: 15/19
+Tiles: 156
+```
+- **Provider**: Current map tile source
+- **Zoom**: Current/Maximum zoom
+- **Tiles**: Number of cached tiles
+
+### Drone Markers
+- **Drone 1**: Cyan blue marker (#00d4ff)
+- **Drone 2**: Purple marker (#a78bfa)
+- **Flight Path**: Colored trail showing travel history
+
+### Map Providers
+1. **Esri World Imagery** (Default): Satellite view
+2. **OpenStreetMap**: Street map
+3. **CartoDB Dark**: Dark theme map
+
+To change provider: Right-click map → Select provider
 
 ---
 
 ## Troubleshooting
 
-### Application Won't Start
+### Connection Issues
 
-**Windows:**
-- Check antivirus isn't blocking
-- Run as Administrator
-- Reinstall application
+#### "No ports detected"
+**Problem**: No COM ports shown
+**Solutions**:
+- Check USB cable connection
+- Install drone driver (CH340, FTDI, etc.)
+- Try different USB port
+- Restart computer
 
-**Linux:**
-- Check Python version: `python3 --version` (need 3.7+)
-- Install missing dependencies: `pip3 install -r requirements.txt`
-- Check permissions: `chmod +x asra_gcs_main.py`
+#### "Connection timeout"
+**Problem**: Can't connect to drone
+**Solutions**:
+- Verify correct COM port selected
+- Check baud rate matches drone (try 57600, then 115200)
+- Ensure drone is powered on
+- Check MAVLink is enabled on drone
+- Try shorter/better USB cable
 
-### Map Not Loading
+#### "Disconnected unexpectedly"
+**Problem**: Connection drops during operation
+**Solutions**:
+- Check USB cable (replace if faulty)
+- Verify stable power to drone
+- Reduce USB cable length
+- Update drone firmware
+- Check for interference
 
-**Symptoms:** Blank map or loading tiles endlessly
+### Telemetry Issues
 
-**Solutions:**
-1. Check internet connection (required for first load)
-2. Try different map provider
-3. Clear tile cache: Delete `cache/tiles.db`
-4. Check firewall isn't blocking tile requests
+#### "No HUD data"
+**Problem**: HUD shows 0s or doesn't update
+**Solutions**:
+- Verify connection is established (green status)
+- Check MAVLink stream rate on drone
+- Restart application
+- Reconnect drone
 
-### Telemetry Not Updating
+#### "GPS shows 0,0"
+**Problem**: No GPS position
+**Solutions**:
+- Wait for GPS lock (requires clear sky view)
+- Check "Satellites" count (need 6+ for lock)
+- Move drone outdoors/near window
+- Check GPS module connection
 
-**Symptoms:** HUD frozen, data not changing
+### Map Issues
 
-**Solutions:**
-1. Check connection status (should be green)
-2. Disconnect and reconnect
-3. Verify flight controller is streaming data
-4. Check Messages panel for MAVLink errors
+#### "Map tiles not loading"
+**Problem**: Gray tiles or no map
+**Solutions**:
+- Check internet connection
+- Try different map provider
+- Clear cache: Delete `cache/` folder
+- Restart application
+- Check firewall settings
 
-### High CPU/Memory Usage
-
-**Normal Usage:**
-- CPU: 10-25%
-- Memory: 200-400 MB
-
-**If Higher:**
-- Reduce `update_rate_ms` in config (increase value)
-- Lower `max_cache_tiles` (reduce to 200)
-- Close other applications
+#### "Map is blank/black"
+**Problem**: Nothing visible
+**Solutions**:
+- Zoom out to level 12-14
+- Pan to different location
+- Switch map provider
 - Update graphics drivers
 
-### PreArm Failures
+### Performance Issues
 
-Common messages and solutions:
+#### "Application slow/laggy"
+**Problem**: UI updates slowly
+**Solutions**:
+- Close other applications
+- Reduce zoom level
+- Clear map cache
+- Reduce update rate in config.py
+- Upgrade computer RAM
 
-| Message | Solution |
-|---------|----------|
-| "Need 3D Fix" | Wait for GPS lock (clear sky view) |
-| "Compass variance" | Calibrate compass away from metal |
-| "Accelerometer not calibrated" | Calibrate IMU in Mission Planner |
-| "RC not calibrated" | Calibrate radio in Mission Planner |
-| "Throttle too high" | Lower throttle stick to minimum |
-| "Safety switch" | Press safety switch on flight controller |
+#### "High CPU usage"
+**Problem**: Computer fan loud, slow
+**Solutions**:
+- Disable performance monitoring
+- Reduce telemetry update frequency
+- Limit map tile downloads
+- Close individual drone tabs if not needed
 
 ---
 
-## FAQ
+## Keyboard Shortcuts
 
-**Q: Can I use ASRA GCS with PX4 firmware?**  
-A: Currently optimized for ArduPilot. PX4 may work but is untested.
-
-**Q: Does ASRA GCS support mission planning?**  
-A: Not in v1.0. Use Mission Planner or QGC for mission planning. ASRA GCS can execute uploaded missions.
-
-**Q: Can I connect multiple drones?**  
-A: Not in v1.0. Multi-drone support planned for v2.0.
-
-**Q: Is internet required?**  
-A: Only for initial map tile downloads. Works offline afterward (if tiles cached).
-
-**Q: Can I use my own map tiles?**  
-A: Not currently. Custom tile servers may be supported in future.
-
-**Q: How do I report bugs?**  
-A: Open issue on [GitHub](https://github.com/Zuhaib77/ASRA-GCS/issues)
-
-**Q: Is ASRA GCS free?**  
-A: Yes, and open-source (license TBD).
-
-**Q: Can I contribute to development?**  
-A: Yes! See [Developer Guide](DEVELOPER_GUIDE.md)
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+1` | Switch to Combined View |
+| `Ctrl+2` | Switch to Drone 1 Tab |
+| `Ctrl+3` | Switch to Drone 2 Tab |
+| `+` | Zoom in map |
+| `-` | Zoom out map |
+| `R` | Refresh COM ports |
+| `Ctrl+Q` | Quit application |
 
 ---
 
 ## Safety Guidelines
 
-### General Safety
+### Before Flight
+1. ✅ **Verify Connection**: Green "Connected" status
+2. ✅ **Check Telemetry**: HUD showing real data
+3. ✅ **GPS Lock**: 6+ satellites
+4. ✅ **Battery Level**: >30% recommended
+5. ✅ **Flight Mode**: Verify correct mode selected
 
-1. **Always maintain visual line of sight** with your drone
-2. **Never rely solely on GCS** - have RC transmitter ready
-3. **Monitor battery levels** - land with at least 20% remaining
-4. **Respect local regulations** - check airspace restrictions
-5. **Test in safe area** before critical missions
+### During Operation
+- ⚠️ **Monitor Battery**: Watch for low voltage warnings
+- ⚠️ **Check Signal**: Maintain good RSSI (>40%)
+- ⚠️ **Watch Telemetry**: Look for anomalies
+- ⚠️ **Have Manual Override**: Be ready to take manual control
 
-### Using GCS Safely
+### Emergency
+- 🚨 **Connection Lost**: Switch to manual control immediately
+- 🚨 **Low Battery**: Land immediately
+- 🚨 **GPS Loss**: Switch to manual/STABILIZE mode
 
-1. **Verify commands** - Double-check mode changes and arm states
-2. **Monitor messages** - Watch for warnings and errors
-3. **Have backup plan** - Know how to manually fly/land
-4. **Don't force arm** unless you fully understand the risks
-5. **Keep GCS updated** - Check for software updates regularly
+---
 
-### Emergency Contact
+## Advanced Features
 
-In case of emergency (flyaway, crash, injury):
-1. **Land immediately** if possible (RTL or manual)
-2. **Kill motors** if crashing (disarm)
-3. **Contact authorities** if necessary (lost drone, property damage)
-4. **Report incidents** to local aviation authority if required
+### Configuration File
+Edit `config.py` to customize:
+- Map providers and defaults
+- Update rates
+- Zoom limits
+- Cache settings
+- MAVLink parameters
+
+### Log Files
+Located in `logs/` directory:
+- `asra_gcs_YYYYMMDD.log`: Daily application logs
+- Review for debugging and incident analysis
+
+### Map Cache
+Located in `cache/` directory:
+- Tiles stored for offline use
+- Delete folder to clear cache
+- Automatically manages size
 
 ---
 
 ## Support
 
-**Documentation:**
-- [GitHub Wiki](https://github.com/Zuhaib77/ASRA-GCS/wiki)
-- [Developer Guide](DEVELOPER_GUIDE.md)
-- [Development Journey](DEVELOPMENT_JOURNEY.md)
+### Getting Help
+- **Documentation**: README.md, V2_WHATS_NEW.md
+- **Issues**: GitHub Issues page
+- **Updates**: Check GitHub for new versions
 
-**Community:**
-- [GitHub Issues](https://github.com/Zuhaib77/ASRA-GCS/issues) - Bug reports
-- [GitHub Discussions](https://github.com/Zuhaib77/ASRA-GCS/discussions) - Q&A
-
-**Developer:**
-- GitHub: [@Zuhaib77](https://github.com/Zuhaib77)
+### Reporting Bugs
+Include:
+1. ASRA GCS version (v2.0)
+2. Operating system (Windows version)
+3. Steps to reproduce
+4. Log file (`logs/` directory)
+5. Screenshots if applicable
 
 ---
 
-**Version**: 1.0.0 | **Last Updated**: January 5, 2026
+## License & Credits
+
+**ASRA GCS v2.0**
+- Free and open-source software
+- Multi-drone ground control station
+- MAVLink protocol support
+
+**Acknowledgments**:
+- PyQt5 GUI framework
+- pymavlink library
+- OpenStreetMap contributors
+- Esri World Imagery
+
+---
+
+*Last Updated: January 2026*
+*Version: 2.0.0*
