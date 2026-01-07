@@ -49,8 +49,8 @@ class Config:
             "default_lat": 28.6139,  # Delhi - can be changed by user
             "default_lon": 77.2090,
             "default_zoom": 12,
-            "min_zoom": 3,
-            "max_zoom": 18,  # Reduced from 19 for better performance
+            "min_zoom": 10,
+            "max_zoom": 22,  # Increased from 18 for closer viewing
             "tile_size": 256,
             "max_cache_tiles": 400,  # Optimized from 1000
             "cache_cleanup_threshold": 450,
