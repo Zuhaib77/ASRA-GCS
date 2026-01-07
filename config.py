@@ -50,7 +50,7 @@ class Config:
             "default_lon": 77.2090,
             "default_zoom": 12,
             "min_zoom": 10,
-            "max_zoom": 22,  # Increased from 18 for closer viewing
+            "max_zoom": 19,  # Tile provider maximum
             "tile_size": 256,
             "max_cache_tiles": 400,  # Optimized from 1000
             "cache_cleanup_threshold": 450,
@@ -212,11 +212,11 @@ class Config:
         issues = []
         
         # Validate numeric ranges
-        if not (3 <= self.get("map", "min_zoom") <= 18):
-            issues.append("map.min_zoom must be between 3 and 18")
+        if not (1 <= self.get("map", "min_zoom") <= 22):
+            issues.append("map.min_zoom must be between 1 and 22")
             
-        if not (3 <= self.get("map", "max_zoom") <= 18):
-            issues.append("map.max_zoom must be between 3 and 18")
+        if not (1 <= self.get("map", "max_zoom") <= 22):
+            issues.append("map.max_zoom must be between 1 and 22")
             
         if not (50 <= self.get("map", "max_cache_tiles") <= 2000):
             issues.append("map.max_cache_tiles must be between 50 and 2000")

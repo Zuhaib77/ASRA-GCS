@@ -383,7 +383,7 @@ class ProfessionalGCSMap(QWidget):
             self.center_lon = config.get("map", "default_lon", 77.2090)
             self.zoom = config.get("map", "default_zoom", 12)
             self.min_zoom = config.get("map", "min_zoom", 10)
-            self.max_zoom = config.get("map", "max_zoom", 22)
+            self.max_zoom = config.get("map", "max_zoom", 19)
             self.tile_size = config.get("map", "tile_size", 256)
             provider_name = config.get("map", "default_provider", "OpenStreetMap")
             # Find matching provider
@@ -398,7 +398,7 @@ class ProfessionalGCSMap(QWidget):
             self.center_lon = 77.2090
             self.zoom = 12
             self.min_zoom = 10
-            self.max_zoom = 22
+            self.max_zoom = 19
             self.tile_size = 256
             self.current_provider = MapProvider.ESRI_SATELLITE
         
