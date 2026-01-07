@@ -157,10 +157,10 @@ class MainWindow(QMainWindow):
         self.status_cards[self.drone_1_id] = card1
         left_layout.addWidget(card1)
         
-        # Drone 1 Mini HUD
+        # Drone 1 Full HUD
         if ReferenceStyleHUDWidget:
             hud1 = ReferenceStyleHUDWidget()
-            hud1.setFixedSize(280, 240)
+            hud1.setFixedSize(400, 350)
             self.mini_huds[self.drone_1_id] = hud1
             left_layout.addWidget(hud1)
         
@@ -170,10 +170,10 @@ class MainWindow(QMainWindow):
         self.status_cards[self.drone_2_id] = card2
         left_layout.addWidget(card2)
         
-        # Drone 2 Mini HUD
+        # Drone 2 Full HUD
         if ReferenceStyleHUDWidget:
             hud2 = ReferenceStyleHUDWidget()
-            hud2.setFixedSize(280, 240)
+            hud2.setFixedSize(400, 350)
             self.mini_huds[self.drone_2_id] = hud2
             left_layout.addWidget(hud2)
         
