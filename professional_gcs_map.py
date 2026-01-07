@@ -698,6 +698,12 @@ class ProfessionalGCSMap(QWidget):
             except Exception as e:
                 self.logger.error(f"Error drawing coordinates: {e}")
             
+            # Draw crosshair at center
+            try:
+                self._draw_crosshair(painter)
+            except Exception as e:
+                self.logger.error(f"Error drawing coordinates: {e}")
+            
             try:
                 self._draw_status(painter)
             except Exception as e:
@@ -962,13 +968,49 @@ class ProfessionalGCSMap(QWidget):
             painter.drawText(x, y + 10, text)
     
     def _draw_coordinates(self, painter: QPainter):
-        """Draw current coordinates"""
+        """Draw coordinates - shows center (crosshair) position"""
+        center_lat, center_lon = self.center_lat, self.center_lon
+        
         painter.setPen(self.colors['text'])
-        font = QFont("Arial", 9)
+        font = QFont("Arial", 9, QFont.Bold)
         painter.setFont(font)
         
-        coord_text = f"Lat: {self.center_lat:.6f}°  Lon: {self.center_lon:.6f}°"
-        painter.drawText(10, 20, coord_text)
+        coord_text = f"Center: {center_lat:.6f}°, {center_lon:.6f}° | Zoom: {self.zoom}"
+        
+        # Background box
+        text_rect = painter.boundingRect(0, 0, 0, 0, 0, coord_text)
+        bg_rect = QRectF(10, self.height() - 35, text_rect.width() + 20, 25)
+        painter.fillRect(bg_rect, QColor(0, 0, 0, 180))
+        painter.setPen(QPen(QColor(100, 100, 100), 1))
+        painter.drawRect(bg_rect)
+        
+        painter.setPen(self.colors['text'])
+        painter.drawText(20, self.height() - 18, coord_text)
+    
+    def _draw_crosshair(self, painter: QPainter):
+        """Draw crosshair at map center"""
+        center_x = self.width() // 2
+        center_y = self.height() // 2
+        
+        crosshair_color = QColor(0, 255, 136)  # Green
+        crosshair_size = 20
+        
+        painter.setPen(QPen(crosshair_color, 2))
+        
+        # Horizontal line
+        painter.drawLine(center_x - crosshair_size, center_y, center_x + crosshair_size, center_y)
+        
+        # Vertical line
+        painter.drawLine(center_x, center_y - crosshair_size, center_x, center_y + crosshair_size)
+        
+        # Center dot
+        painter.setBrush(QBrush(crosshair_color))
+        painter.drawEllipse(center_x - 2, center_y - 2, 4, 4)
+        
+        # Outer circle
+        painter.setBrush(Qt.NoBrush)
+        painter.setPen(QPen(crosshair_color, 1))
+        painter.drawEllipse(center_x - 8, center_y - 8, 16, 16)
     
     def _draw_status(self, painter: QPainter):
         """Draw status information"""
