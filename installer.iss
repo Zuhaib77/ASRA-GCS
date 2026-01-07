@@ -1,45 +1,50 @@
-; Inno Setup Script for ASRA Ground Control Station
-; Creates professional Windows installer
+; ASRA GCS v2.0 Installer Script
+; Inno Setup configuration for Windows installer
 
-#define MyAppName "ASRA Ground Control Station"
-#define MyAppVersion "1.0.0"
-#define MyAppPublisher "Zuhaib77"
+#define MyAppName "ASRA GCS"
+#define MyAppVersion "2.0.0"
+#define MyAppPublisher "ASRA"
 #define MyAppURL "https://github.com/Zuhaib77/ASRA-GCS"
-#define MyAppExeName "ASRA_GCS.exe"
+#define MyAppExeName "ASRA_GCS_v2.0.exe"
 
 [Setup]
-AppId={{8F9D5A2B-1C4E-4A9F-B7E6-3D8C9F1A5E7B}
+AppId={{A5RA-GCS-2024-MULTI-DRONE}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}/issues
 AppUpdatesURL={#MyAppURL}/releases
-DefaultDirName={autopf}\ASRA_GCS
-DefaultGroupName=ASRA GCS
+DefaultDirName={autopf}\{#MyAppName}
+DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=LICENSE.txt
-OutputDir=dist
-OutputBaseFilename=ASRA_GCS_Setup_v{#MyAppVersion}
+LicenseFile=LICENSE
+OutputDir=Output
+OutputBaseFilename=ASRA_GCS_v2.0_Setup
 SetupIconFile=resources\logo.png
-Compression=lzma
+Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
+ArchitecturesInstallIn64BitMode=x64
 PrivilegesRequired=admin
+DisableProgramGroupPage=yes
+UninstallDisplayIcon={app}\{#MyAppExeName}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.1; Check: not IsAdminInstallMode
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "V2_WHATS_NEW.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion recursesubdirs createallsubdirs
+; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -52,8 +57,15 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-function InitializeSetup(): Boolean;
+procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  Result := True;
-  // Check for required dependencies (none for our standalone exe)
+  if CurStep = ssPostInstall then
+  begin
+    MsgBox('ASRA GCS v2.0 has been installed successfully!' + #13#10 + #13#10 + 
+           'Features:' + #13#10 +
+           '✓ Multi-drone support (2 drones)' + #13#10 +
+           '✓ Professional HUD displays' + #13#10 +
+           '✓ Enhanced mapping system' + #13#10 + #13#10 +
+           'See User Manual for complete usage guide.', mbInformation, MB_OK);
+  end;
 end;
