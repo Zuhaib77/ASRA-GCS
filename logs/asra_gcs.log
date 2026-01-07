@@ -1,0 +1,189 @@
+2025-10-20 22:20:29 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:20:31 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-20 22:20:31 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-20 22:20:31 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:20:31 | INFO     | Dummy-2  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:20:31 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:20:31 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-20 22:22:56 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:22:56 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-20 22:22:56 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-20 22:22:56 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:22:56 | INFO     | Dummy-2  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:22:57 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:22:57 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-20 22:23:55 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:23:56 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-20 22:23:56 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-20 22:23:56 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:23:56 | INFO     | Dummy-2  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:23:56 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:23:56 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-20 22:25:51 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:25:51 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:25:51 | INFO     | Dummy-2  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:25:51 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:27:06 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:27:06 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:27:06 | INFO     | Dummy-2  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:27:06 | INFO     | MainThread | root                 | start           | Performance monitoring started
+2025-10-20 22:29:03 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:29:04 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:30:21 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:30:22 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-20 22:30:22 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-20 22:30:22 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:30:22 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-20 22:31:02 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:31:02 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2025-10-20 22:39:28 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:48:22 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:48:53 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:50:28 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:52:02 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:53:47 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:55:33 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:56:49 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:56:49 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-20 22:56:49 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-20 22:56:50 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-20 22:58:33 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 22:59:13 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 23:04:48 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 23:08:17 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 23:13:51 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-20 23:24:45 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 10:02:53 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 10:02:54 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-24 10:02:54 | CRITICAL | MainThread | main                 | main            | Critical error starting ASRA GCS: 'charmap' codec can't encode character '\U0001f681' in position 0: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\spect\ASRA_GCS_with_map\asra_gcs.py", line 47, in main
+    print("🚁 ASRA Ground Control Station v2.0")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\spect\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f681' in position 0: character maps to <undefined>
+2025-10-24 10:04:49 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 10:04:49 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-24 10:04:49 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-24 10:04:50 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-24 11:37:19 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 11:37:19 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-24 11:37:19 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-24 11:37:19 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-24 11:38:56 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 11:38:56 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-24 11:38:56 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-24 11:38:57 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-24 11:50:19 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 11:50:19 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-24 11:50:19 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-24 11:50:19 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-24 11:51:08 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 11:51:08 | INFO     | MainThread | main                 | main            | Initializing ASRA Ground Control Station
+2025-10-24 11:51:08 | INFO     | MainThread | main                 | main            | Creating main UI window
+2025-10-24 11:51:08 | INFO     | MainThread | main                 | main            | ASRA GCS application started successfully
+2025-10-24 11:51:29 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 11:51:52 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 11:52:18 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:16:51 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:17:15 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:42:31 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:42:39 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:52:56 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:55:29 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:56:30 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 12:59:53 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:00:32 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:01:12 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:02:10 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:02:29 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:03:19 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:03:50 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:04:24 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:06:12 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 13:06:53 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:11:45 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:12:04 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:12:09 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:17:42 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:18:05 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:23:32 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:42:41 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:47:40 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:53:05 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:53:23 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-24 15:53:57 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-25 11:05:50 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2025-10-25 11:42:30 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 13:02:02 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 13:02:02 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 13:02:04 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2026-01-05 13:03:46 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (No ports detected) on No ports detected @ 57600 baud - Color: #FF0000
+2026-01-05 13:11:07 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 13:11:07 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 13:11:09 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2026-01-05 13:11:17 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (No ports detected) on No ports detected @ 57600 baud - Color: #FF0000
+2026-01-05 13:12:01 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 13:12:02 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 13:12:03 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2026-01-05 13:12:09 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (No ports detected) on No ports detected @ 57600 baud - Color: #FF0000
+2026-01-05 13:12:09 | INFO     | MainThread | drone_manager        | connect_drone   | Connecting drone: drone_1
+2026-01-05 13:12:25 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 13:12:25 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 13:12:27 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2026-01-05 13:12:52 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (No ports detected) on No ports detected @ 57600 baud - Color: #FF0000
+2026-01-05 13:12:52 | INFO     | MainThread | drone_manager        | connect_drone   | Connecting drone: drone_1
+2026-01-05 13:12:53 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 13:12:53 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 13:12:55 | INFO     | Dummy-1  | tile_downloader      | run             | Tile download manager started
+2026-01-05 13:13:00 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (No ports detected) on No ports detected @ 57600 baud - Color: #FF0000
+2026-01-05 13:13:00 | INFO     | MainThread | drone_manager        | connect_drone   | Connecting drone: drone_1
+2026-01-05 13:13:10 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-05 14:59:21 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 14:59:21 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 14:59:21 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-05 14:59:21 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-05 14:59:24 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-05 15:00:01 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-05 15:00:01 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-05 15:00:01 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-05 15:00:01 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-05 16:50:29 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 16:50:29 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 16:50:29 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-05 16:50:29 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-05 16:50:32 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-05 16:53:33 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-05 16:53:33 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-05 16:53:33 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-05 16:53:33 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-05 16:54:28 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 16:54:56 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 16:54:56 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 16:54:56 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-05 16:54:56 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-05 16:54:59 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-05 16:55:23 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-05 16:55:23 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-05 16:55:23 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-05 16:55:23 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-05 17:06:04 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 17:06:04 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 17:06:04 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-05 17:06:04 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-05 17:06:07 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-05 17:06:26 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-05 17:06:26 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-05 17:06:26 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-05 17:06:26 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-05 17:07:38 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-05 17:07:38 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-05 17:07:38 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-05 17:07:38 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-05 17:07:41 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-05 17:07:59 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-05 17:07:59 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-05 17:07:59 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-05 17:07:59 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
