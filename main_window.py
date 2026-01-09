@@ -269,7 +269,7 @@ class MainWindow(QMainWindow):
         # Create controller if not exists
         if drone_id not in self.controllers:
             drone = self.drone_manager.get_drone(drone_id)
-            self.controllers[drone_id] = SimpleController(panel, drone.worker)
+            self.controllers[drone_id] = SimpleController(panel, drone.worker, self.drone_manager, drone_id)
         
         return panel
     

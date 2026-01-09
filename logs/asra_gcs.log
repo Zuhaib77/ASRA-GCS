@@ -314,3 +314,30 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f681' in posit
 2026-01-07 16:09:13 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
 2026-01-07 16:09:13 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
 2026-01-07 16:09:13 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-08 11:14:29 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-08 11:14:29 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-08 11:14:29 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-08 11:14:29 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-08 11:14:31 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-08 11:16:09 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-08 11:16:09 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-08 11:16:09 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-08 11:16:09 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-08 11:16:12 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-08 11:16:12 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-08 11:16:12 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-08 11:16:12 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-08 11:16:13 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-08 11:20:35 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-08 11:20:35 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-08 11:20:35 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-08 11:20:35 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
+2026-01-09 15:06:34 | INFO     | MainThread | root                 | setup_logging   | ASRA GCS Logging System Initialized
+2026-01-09 15:06:34 | INFO     | MainThread | drone_manager        | __init__        | DroneManager initialized (max drones: 2)
+2026-01-09 15:06:34 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_1 (Drone 1) on  @ 57600 baud - Color: #FF0000
+2026-01-09 15:06:34 | INFO     | MainThread | drone_manager        | add_drone       | Added drone: drone_2 (Drone 2) on  @ 57600 baud - Color: #0000FF
+2026-01-09 15:06:37 | INFO     | Dummy-3  | tile_downloader      | run             | Tile download manager started
+2026-01-09 15:06:52 | INFO     | MainThread | drone_manager        | cleanup         | Cleaning up all drone connections...
+2026-01-09 15:06:52 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_1
+2026-01-09 15:06:52 | INFO     | MainThread | drone_manager        | remove_drone    | Removed drone: drone_2
+2026-01-09 15:06:52 | INFO     | MainThread | drone_manager        | cleanup         | Cleanup complete
