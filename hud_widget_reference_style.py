@@ -11,6 +11,7 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
         super().__init__(parent)
         self.roll = 0.0
         self.pitch = 0.0
+        self._yaw_rad = 0.0  # Raw yaw in radians from ATTITUDE
         self.heading = 0
         self.airspeed = 0.0
         self.groundspeed = 0.0
@@ -58,16 +59,20 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
 
     def update_attitude(self, roll, pitch, yaw):
         import time
+        # Roll and pitch are in radians - store as-is for horizon display
         self.roll = roll
         self.pitch = pitch
-        self.heading = int(math.degrees(yaw) % 360)
+        # Store raw yaw in radians (used for roll pointer, heading comes from VFR_HUD)
+        self._yaw_rad = yaw
         self._has_attitude_data = True
         self._last_attitude_time = time.time()
         self.update()
 
     def update_vfr(self, heading, airspeed, groundspeed, alt):
         import time
-        self.heading = int(heading % 360)
+        # VFR_HUD heading is already in degrees (0-360) from flight controller
+        # Use it directly without conversion
+        self.heading = int(heading) % 360 if heading is not None else 0
         self.airspeed = airspeed
         self.groundspeed = groundspeed
         self.altitude = alt
@@ -139,7 +144,7 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
             painter.end()
     
     def draw_no_data_state(self, painter):
-        \"\"\"Draw gray NO DATA state when no telemetry received\"\"\"
+        """Draw gray NO DATA state when no telemetry received"""
         painter.save()
         center = self.rect().center()
         w, h = self.width(), self.height()
