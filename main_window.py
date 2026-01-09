@@ -395,8 +395,30 @@ class MainWindow(QMainWindow):
                 background-color: #0a0a0a;
                 color: #ffffff;
             }
-        """)\n    \n    def _on_drone_connection_changed(self, drone_id):\n        """Handle connection/disconnection for Combined View components"""\n        drone = self.drone_manager.get_drone(drone_id)\n        if not drone:\n            return\n        \n        # Update mini HUD in combined view\n        if drone_id in self.mini_huds:\n            hud = self.mini_huds[drone_id]\n            hud.update_connection_status(drone.connected)\n            if not drone.connected:\n                # Reset HUD to "waiting for data" state\n                hud.reset_data_validity()\n        \n        # Update status card\n        if drone_id in self.status_cards:\n            self.status_cards[drone_id].update_status(drone.telemetry)\n        \n        # Add message to telemetry log\n        status = "Connected" if drone.connected else "Disconnected"\n        self.telemetry_messages.append(f"[{drone.name}] {status}")\n
-    
+        """)
+
+    def _on_drone_connection_changed(self, drone_id):
+        """Handle connection/disconnection for Combined View components"""
+        drone = self.drone_manager.get_drone(drone_id)
+        if not drone:
+            return
+        
+        # Update mini HUD in combined view
+        if drone_id in self.mini_huds:
+            hud = self.mini_huds[drone_id]
+            hud.update_connection_status(drone.connected)
+            if not drone.connected:
+                # Reset HUD to "waiting for data" state
+                hud.reset_data_validity()
+        
+        # Update status card
+        if drone_id in self.status_cards:
+            self.status_cards[drone_id].update_status(drone.telemetry)
+        
+        # Add message to telemetry log
+        status = "Connected" if drone.connected else "Disconnected"
+        self.telemetry_messages.append(f"[{drone.name}] {status}")
+
     def closeEvent(self, event):
         """Clean up on close"""
         self.update_timer.stop()
