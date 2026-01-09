@@ -22,6 +22,16 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
         self.warning = ""
         self._connected = False
         self._is_armed = False
+        
+        # Data validity flags - only show real data from flight controller
+        self._has_attitude_data = False
+        self._has_vfr_data = False
+        self._has_gps_data = False
+        self._has_battery_data = False
+        self._last_attitude_time = 0
+        self._last_vfr_time = 0
+        self._data_timeout = 5.0  # seconds before data is considered stale
+        
         self.setMinimumSize(800, 600)
 
         # --- Reference Style Color Scheme ---
@@ -47,25 +57,33 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
         self.update()
 
     def update_attitude(self, roll, pitch, yaw):
+        import time
         self.roll = roll
         self.pitch = pitch
         self.heading = int(math.degrees(yaw) % 360)
+        self._has_attitude_data = True
+        self._last_attitude_time = time.time()
         self.update()
 
     def update_vfr(self, heading, airspeed, groundspeed, alt):
+        import time
         self.heading = int(heading % 360)
         self.airspeed = airspeed
         self.groundspeed = groundspeed
         self.altitude = alt
+        self._has_vfr_data = True
+        self._last_vfr_time = time.time()
         self.update()
 
     def update_battery(self, level):
         self.battery_level = level
+        self._has_battery_data = True
         self.update()
 
     def update_gps(self, fix_type, satellites):
         self.gps_fix = fix_type
         self.gps_sats = satellites
+        self._has_gps_data = True
         self.update()
 
     def update_connection_status(self, connected):
@@ -74,6 +92,20 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
 
     def update_armed_status(self, armed):
         self._is_armed = armed
+        self.update()
+    
+    def reset_data_validity(self):
+        """Reset data validity flags when disconnected"""
+        self._has_attitude_data = False
+        self._has_vfr_data = False
+        self._has_gps_data = False
+        self._has_battery_data = False
+        self.roll = 0.0
+        self.pitch = 0.0
+        self.heading = 0
+        self.airspeed = 0.0
+        self.groundspeed = 0.0
+        self.altitude = 0.0
         self.update()
 
     def set_warning(self, warning):
@@ -88,16 +120,59 @@ class ReferenceStyleHUDWidget(QtWidgets.QWidget):
             # Draw background
             painter.fillRect(self.rect(), self.color_background)
             
-            # Draw main HUD elements
-            self.draw_artificial_horizon(painter)
-            self.draw_crosshair(painter)
-            self.draw_heading_indicator(painter)
-            self.draw_side_tapes(painter)
+            # Check if we have valid attitude data
+            if not self._has_attitude_data:
+                # Show "NO DATA" state with grayed out horizon
+                self.draw_no_data_state(painter)
+            else:
+                # Draw main HUD elements with real data
+                self.draw_artificial_horizon(painter)
+                self.draw_crosshair(painter)
+                self.draw_heading_indicator(painter)
+                self.draw_side_tapes(painter)
+            
+            # Always draw mode, status and warnings
             self.draw_flight_mode(painter)
             self.draw_status_indicators(painter)
             self.draw_warnings(painter)
         finally:
             painter.end()
+    
+    def draw_no_data_state(self, painter):
+        \"\"\"Draw gray NO DATA state when no telemetry received\"\"\"
+        painter.save()
+        center = self.rect().center()
+        w, h = self.width(), self.height()
+        
+        # Gray background with X pattern
+        gray_color = QtGui.QColor(40, 40, 40)
+        painter.fillRect(self.rect(), gray_color)
+        
+        # Draw dashed horizon line at center
+        dash_pen = QtGui.QPen(QtGui.QColor(80, 80, 80), 2, QtCore.Qt.DashLine)
+        painter.setPen(dash_pen)
+        painter.drawLine(0, center.y(), w, center.y())
+        
+        # Draw grayed out crosshair outline
+        painter.setPen(QtGui.QPen(QtGui.QColor(80, 80, 80), 2))
+        painter.drawLine(center.x() - 100, center.y(), center.x() - 20, center.y())
+        painter.drawLine(center.x() + 20, center.y(), center.x() + 100, center.y())
+        painter.drawLine(center.x(), center.y() - 100, center.x(), center.y() - 20)
+        painter.drawLine(center.x(), center.y() + 20, center.x(), center.y() + 100)
+        
+        # Draw "WAITING FOR DATA" text
+        painter.setFont(self.font_large)
+        painter.setPen(QtGui.QColor(150, 150, 150))
+        text_rect = QtCore.QRectF(0, center.y() - 60, w, 40)
+        painter.drawText(text_rect, QtCore.Qt.AlignCenter, "WAITING FOR DATA")
+        
+        # Draw "Connect to Flight Controller" subtext
+        painter.setFont(self.font_medium)
+        painter.setPen(QtGui.QColor(100, 100, 100))
+        sub_rect = QtCore.QRectF(0, center.y() - 20, w, 30)
+        painter.drawText(sub_rect, QtCore.Qt.AlignCenter, "Connect to Flight Controller")
+        
+        painter.restore()
 
     def draw_artificial_horizon(self, painter):
         """Draw the artificial horizon with pitch ladder"""
