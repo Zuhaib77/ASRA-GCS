@@ -274,16 +274,28 @@ class DronePanelWidget(QtWidgets.QWidget):
             self._update_flight_mode(data)
         elif msg_type == "statustext":
             self.append_message(f"FCU: {data}")
+        elif msg_type == "status_message":
+            # Connection status message
+            self.append_message(data.get('text', ''))
+        elif msg_type == "error_message":
+            # Error message
+            self.append_message(f"ERROR: {data.get('text', '')}")
     
     def _update_attitude(self, data):
+        # Update HUD with raw values (radians)
         self.hud.update_attitude(data.get('roll', 0), data.get('pitch', 0), data.get('yaw', 0))
+        # Display roll and pitch in degrees
         self.lbl_roll.setText(f"{math.degrees(data.get('roll', 0)):.1f}°")
         self.lbl_pitch.setText(f"{math.degrees(data.get('pitch', 0)):.1f}°")
-        self.lbl_yaw.setText(f"{math.degrees(data.get('yaw', 0)):.1f}°")
+        # Note: yaw label will be updated by _update_vfr with heading from VFR_HUD
     
     def _update_vfr(self, data):
-        self.hud.update_vfr(data.get('heading', 0), data.get('airspeed', 0), 
+        # VFR_HUD heading is already in degrees from flight controller
+        heading = data.get('heading', 0)
+        self.hud.update_vfr(heading, data.get('airspeed', 0), 
                            data.get('groundspeed', 0), data.get('alt', 0))
+        # Update yaw label with heading from VFR_HUD (degrees, direct from FC)
+        self.lbl_yaw.setText(f"{int(heading)}°")
     
     def _update_gps(self, data):
         fix_map = {0: "No GPS", 1: "No Fix", 2: "2D", 3: "3D", 4: "DGPS", 5: "RTK"}
@@ -311,6 +323,18 @@ class DronePanelWidget(QtWidgets.QWidget):
         if drone:
             self.hud.update_connection_status(drone.connected)
             self.hud.update_armed_status(drone.armed)
+            
+            # Sync button states globally
+            if drone.connected:
+                self.btn_connect.setEnabled(False)
+                self.btn_disconnect.setEnabled(True)
+                self.append_message(f"✓ Connected to {drone.port}")
+            else:
+                self.btn_connect.setEnabled(True)
+                self.btn_disconnect.setEnabled(False)
+                self.append_message("✗ Disconnected")
+                # Reset HUD data validity when disconnected
+                self.hud.reset_data_validity()
     
     def append_message(self, msg):
         self.message_area.append(msg)
