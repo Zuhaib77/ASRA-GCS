@@ -179,6 +179,10 @@ class MainWindow(QMainWindow):
         
         left_layout.addStretch()
         
+        # Connect drone manager signals to update mini HUDs on connection changes
+        self.drone_manager.drone_connected.connect(self._on_drone_connection_changed)
+        self.drone_manager.drone_disconnected.connect(self._on_drone_connection_changed)
+        
         # Scroll area for left column
         left_scroll = QScrollArea()
         left_scroll.setWidgetResizable(True)
@@ -391,7 +395,7 @@ class MainWindow(QMainWindow):
                 background-color: #0a0a0a;
                 color: #ffffff;
             }
-        """)
+        """)\n    \n    def _on_drone_connection_changed(self, drone_id):\n        """Handle connection/disconnection for Combined View components"""\n        drone = self.drone_manager.get_drone(drone_id)\n        if not drone:\n            return\n        \n        # Update mini HUD in combined view\n        if drone_id in self.mini_huds:\n            hud = self.mini_huds[drone_id]\n            hud.update_connection_status(drone.connected)\n            if not drone.connected:\n                # Reset HUD to "waiting for data" state\n                hud.reset_data_validity()\n        \n        # Update status card\n        if drone_id in self.status_cards:\n            self.status_cards[drone_id].update_status(drone.telemetry)\n        \n        # Add message to telemetry log\n        status = "Connected" if drone.connected else "Disconnected"\n        self.telemetry_messages.append(f"[{drone.name}] {status}")\n
     
     def closeEvent(self, event):
         """Clean up on close"""
